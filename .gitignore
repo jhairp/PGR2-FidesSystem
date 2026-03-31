@@ -1,0 +1,15 @@
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Entornos virtuales
+venv/
+env/
+
+# Node modules (frontend)
+node_modules/
+
+# Variables de entorno (seguridad)
+.env
