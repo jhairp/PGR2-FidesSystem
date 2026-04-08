@@ -15,7 +15,9 @@ import Tables from "views/admin/Tables.js";
 
 export default function Admin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
-
+  
+  // 1. Detectar si estamos en la ruta de mapas
+  const isMapsPage = window.location.href.indexOf("/admin/capillas") !== -1;
   return (
     <>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -23,26 +25,25 @@ export default function Admin() {
       <div 
         className="relative transition-all duration-300 min-h-screen bg-blueGray-100"
         style={{ 
-          // Si w-64 (256px) deja espacio, probemos con rem exactos o bajando 1px
           marginLeft: isCollapsed ? '5rem' : '16rem', 
           width: 'auto'
         }}
       >
         <AdminNavbar />
-        {/* Header */}
-        <HeaderStats />
+
+        {/* 2. SOLO mostrar el Header si NO estamos en mapas */}
+        {!isMapsPage && <HeaderStats />}
         
-        {/* Este es el contenedor de las vistas (Dashboard, Tablas, etc.) */}
-        <div className="px-4 md:px-10 mx-auto w-full -m-24">
+        <div className={`mx-auto w-full ${isMapsPage ? "p-0 pb-0" : "px-4 md:px-10 -m-24"}`}>
           <Switch>
             <Route path="/admin/dashboard" exact component={Dashboard} />
             <Route path="/admin/usuarios" exact component={Settings} />
             <Route path="/admin/capillas" exact component={Maps} />
-            <Route path="/admin/bautizos" exact component={Tables} /> 
-            <Route path="/admin/calendario" exact component={Settings} />
-            <Redirect from="/admin" to="/admin/dashboard" />
+            {/* ... resto de rutas */}
           </Switch>
-          <FooterAdmin />
+
+          {/* 3. SOLO mostrar el Footer si NO estamos en mapas */}
+          {!isMapsPage && <FooterAdmin />}
         </div>
       </div>
     </>
