@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 // Importación de tu icono local
 import miIconoIglesia from "../../assets/img/iglesiaicono.png"; 
 
@@ -26,7 +27,7 @@ function MapExample({ capillas }) {
       styles: modernStyle,
       mapTypeControl: false,
       streetViewControl: true,
-      fullscreenControl: false, // Lo desactivamos porque ya estamos en pantalla completa
+      fullscreenControl: false, 
     };
 
     const map = new google.maps.Map(mapElement, mapOptions);
@@ -36,37 +37,44 @@ function MapExample({ capillas }) {
       let hasMarkers = false;
 
       capillas.forEach((capilla) => {
-        if (capilla.lat && capilla.lng) {
-          const position = { lat: parseFloat(capilla.lat), lng: parseFloat(capilla.lng) };
-
-          const imageIcon = {
-            url: miIconoIglesia,
-            scaledSize: new google.maps.Size(45, 45),
-            anchor: new google.maps.Point(22, 45) 
+        // CORRECCIÓN: Separar el string "lat, lng" de la base de datos
+        if (capilla.coordenadas_cen && capilla.coordenadas_cen.includes(',')) {
+          const [latStr, lngStr] = capilla.coordenadas_cen.split(",");
+          const position = { 
+            lat: parseFloat(latStr.trim()), 
+            lng: parseFloat(lngStr.trim()) 
           };
 
-          const marker = new google.maps.Marker({
-            position: position,
-            map: map,
-            icon: imageIcon,
-            title: capilla.nombre,
-            animation: google.maps.Animation.DROP,
-          });
+          if (!isNaN(position.lat) && !isNaN(position.lng)) {
+            const imageIcon = {
+              url: miIconoIglesia,
+              scaledSize: new google.maps.Size(45, 45),
+              anchor: new google.maps.Point(22, 45) 
+            };
 
-          const infowindow = new google.maps.InfoWindow({
-            content: `
-              <div style="padding:10px; line-height:1.4; color:black;">
-                <strong style="font-size:14px;">${capilla.nombre}</strong><br/>
-                <span style="font-size:12px; color:#666;">${capilla.direccion || "Capilla Parroquial"}</span>
-              </div>`,
-          });
+            const marker = new google.maps.Marker({
+              position: position,
+              map: map,
+              icon: imageIcon,
+              title: capilla.nom_cen, // Usando nombre real del modelo
+              animation: google.maps.Animation.DROP,
+            });
 
-          marker.addListener("click", () => {
-            infowindow.open(map, marker);
-          });
+            const infowindow = new google.maps.InfoWindow({
+              content: `
+                <div style="padding:10px; line-height:1.4; color:black;">
+                  <strong style="font-size:14px;">${capilla.nom_cen}</strong><br/>
+                  <span style="font-size:12px; color:#666;">${capilla.calle_cen || "Capilla Parroquial"}</span>
+                </div>`,
+            });
 
-          bounds.extend(position);
-          hasMarkers = true;
+            marker.addListener("click", () => {
+              infowindow.open(map, marker);
+            });
+
+            bounds.extend(position);
+            hasMarkers = true;
+          }
         }
       });
 
@@ -79,22 +87,27 @@ function MapExample({ capillas }) {
  return (
     <div 
       className="w-full relative shadow-inner" 
-      /* 100vh = Toda la altura de la ventana.
-         Le restamos un poco si quieres que se vea algo del fondo, 
-         o déjalo en 100vh para inmersión total.
-      */
       style={{ height: "calc(100vh - 0px)" }} 
     >
       <div className="h-full w-full" ref={mapRef} />
-      
-      {/* Etiqueta flotante para que no se vea tan vacío */}
-      <div className="absolute top-20 left-6 z-10 bg-white px-4 py-2 shadow-xl rounded-lg border border-gray-200">
-        <h3 className="font-bold text-blueGray-700">Capillas Parroquiales</h3>
-        <p className="text-xs text-blueGray-500">{capillas.length} ubicaciones activas</p>
+
+      {/* Botón flotante superior derecho */}
+      <div className="absolute top-4 right-4 z-50"> 
+        <Link
+          to="/admin/centros" 
+          className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow-lg flex items-center transition-all duration-200"
+          style={{ 
+              zIndex: 9999, 
+              backgroundColor: '#0284c7', 
+              textDecoration: 'none' 
+          }}
+        >
+          <i className="lni lni-list mr-2"></i>
+          VER LISTA
+        </Link>
       </div>
     </div>
   );
-
 }
 
 export default MapExample;

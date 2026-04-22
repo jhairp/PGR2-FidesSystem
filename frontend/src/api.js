@@ -22,11 +22,30 @@ export const getSaludo = async () => {
 };
 
 export const getCapillas = async () => {
+    // ASEGÚRATE de que esta URL sea la que definiste en urls.py de Django
+    const response = await fetch('http://localhost:8000/api/centros/'); 
+    return await response.json();
+};
+
+// Agrega estas funciones a tu api.js
+export const getCentros = async () => {
     try {
-        const response = await axios.get('http://127.0.0.1:8000/api/capillas/');
-        return response.data;
+        const response = await fetch('http://localhost:8000/api/centros/'); // Cambia por tu URL real
+        if (!response.ok) throw new Error('Error al obtener centros');
+        return await response.json();
     } catch (error) {
-        console.error("Error cargando capillas:", error);
+        console.error(error);
+        return [];
+    }
+};
+
+export const getParroquias = async () => {
+    try {
+        const response = await fetch('http://localhost:8000/api/parroquias/'); // Cambia por tu URL real
+        if (!response.ok) throw new Error('Error al obtener parroquias');
+        return await response.json();
+    } catch (error) {
+        console.error(error);
         return [];
     }
 };

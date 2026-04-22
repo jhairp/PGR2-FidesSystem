@@ -9,8 +9,10 @@ from django.utils.crypto import get_random_string # Para generar la clave tempor
 from rest_framework import status # Para status.HTTP_201_CREATED
 
 # USUARIOS
-from .models import Usuarios, Personas, Rols
+from .models import Usuarios, Personas, Rols, Centros
 from .PerUsu import UsuarioSerializer
+from .ParCen import CentrosSerializer
+
 
 @api_view(['POST'])
 def crear_personal(request):
@@ -144,6 +146,20 @@ def get_usuario_detalle(request, pk):
     except Usuarios.DoesNotExist:
         return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
     
+
+
+@api_view(['GET'])
+def get_centros_db(request):
+    # Obtenemos todos los centros reales de la base de datos
+    centros_queryset = Centros.objects.all()
+    
+    # El serializer se encarga de convertir los objetos de la DB a JSON
+    serializer = CentrosSerializer(centros_queryset, many=True)
+    
+    # Devolvemos la data procesada
+    return Response(serializer.data)
+
+
 
 
 
