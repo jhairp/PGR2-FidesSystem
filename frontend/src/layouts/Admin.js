@@ -15,6 +15,7 @@ import Tables from "views/admin/Tables.js";
 import Bautizos from "views/admin/Bautizos.js";
 
 import UsuariosList from "../components/Usuarios/UsuariosList.jsx";
+import UsuarioForm from "../components/Usuarios/UsuarioForm.jsx";
 
 export default function Admin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -41,6 +42,8 @@ export default function Admin() {
           <Switch>
             <Route path="/admin/dashboard" exact component={Dashboard} />
             <Route path="/admin/usuarios" exact component={UsuariosList} />
+            <Route path="/admin/usuarios/nuevo" exact component={UsuarioForm} />
+            <Route path="/admin/usuarios/editar/:id" exact component={UsuarioForm} />
             <Route path="/admin/capillas" exact component={Maps} />
             {/* ... resto de rutas */}
           </Switch>

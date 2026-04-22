@@ -15,9 +15,7 @@ from .PerUsu import UsuarioSerializer
 @api_view(['POST'])
 def crear_personal(request):
     data = request.data
-    
     try:
-        # Iniciamos una transacción (como el DB::beginTransaction de Laravel)
         with transaction.atomic():
             # 1. Creamos la Persona
             nueva_persona = Personas.objects.create(
@@ -25,33 +23,33 @@ def crear_personal(request):
                 ap_pat_per=data.get('ap_pat_per'),
                 carnet_per=data.get('carnet_per'),
                 cel_per=data.get('cel_per'),
-                id_per_rol_1_id=1  # ID fijo para 'Personal' como en tu Laravel
+                # AQUÍ ESTÁ LA MAGIA: 
+                # Aunque el modelo dice 'id_per_rol_1', 
+                # Django espera que le pases el ID numérico usando '_id' al final
+                id_per_rol_1_id=1 
             )
 
-            # 2. Generamos clave aleatoria
             password_temporal = get_random_string(10)
 
-            # 3. Creamos el Usuario vinculado a esa persona
+            # 2. Creamos el Usuario
             nuevo_usuario = Usuarios.objects.create(
                 correo_usu=data.get('correo_usu'),
-                password=make_password(password_temporal), # Cambiado 'contra_usu' por 'password'
+                password=make_password(password_temporal),
                 estado_usu='activo',
-                id_per_1=nueva_persona,
-                id_rol_1_id=data.get('id_rol_1')
+                id_per_1=nueva_persona, 
+                id_rol_1_id=data.get('id_rol_1') 
             )
 
-            # Aquí podrías poner el código de enviar correo más adelante
-            
-            # 4. Devolvemos la respuesta usando tu serializador PerUsu
             serializer = UsuarioSerializer(nuevo_usuario)
             return Response({
-                "message": "Trabajador creado con éxito",
-                "clave_temporal": password_temporal, # Para que la veas mientras pruebas
+                "message": "Creado con éxito",
+                "clave_temporal": password_temporal,
                 "user": serializer.data
             }, status=status.HTTP_201_CREATED)
 
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 @api_view(['GET'])
 def get_usuarios(request):
@@ -60,14 +58,92 @@ def get_usuarios(request):
     serializer = UsuarioSerializer(usuarios, many=True)
     return Response(serializer.data)
 
+
+# En api/views.py
 @api_view(['POST'])
-def cambiar_estado(request, pk):
-    usuario = Usuarios.objects.get(pk=pk)
-    usuario.estado_usu = 'inactivo' if usuario.estado_usu == 'activo' else 'activo'
-    usuario.save()
-    return Response({'nuevo_estado': usuario.estado_usu})
+def crear_personal(request):
+    data = request.data
+    password_usuario = data.get('password') # Obtenemos la pass del form
+    
+    try:
+        with transaction.atomic():
+            nueva_persona = Personas.objects.create(
+                nom_per=data.get('nom_per'),
+                ap_pat_per=data.get('ap_pat_per'),
+                carnet_per=data.get('carnet_per'),
+                cel_per=data.get('cel_per'),
+                id_per_rol_1_id=1
+            )
 
+            # Usamos la contraseña enviada desde React
+            nuevo_usuario = Usuarios.objects.create(
+                correo_usu=data.get('correo_usu'),
+                password=make_password(password_usuario), 
+                estado_usu='activo',
+                id_per_1=nueva_persona,
+                id_rol_1_id=data.get('id_rol_1')
+            )
 
+            return Response({"message": "Usuario creado"}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+def editar_usuario(request, pk):
+    try:
+        usuario = Usuarios.objects.get(pk=pk)
+        persona = usuario.id_per_1
+        data = request.data
+
+        with transaction.atomic():
+            # Actualizamos datos de la Persona
+            persona.nom_per = data.get('nom_per', persona.nom_per)
+            persona.ap_pat_per = data.get('ap_pat_per', persona.ap_pat_per)
+            persona.carnet_per = data.get('carnet_per', persona.carnet_per)
+            persona.cel_per = data.get('cel_per', persona.cel_per)
+            persona.save()
+
+            # Actualizamos datos del Usuario
+            usuario.correo_usu = data.get('correo_usu', usuario.correo_usu)
+            usuario.id_rol_1_id = data.get('id_rol_1', usuario.id_rol_1_id)
+            usuario.save()
+
+        return Response({"message": "Usuario actualizado con éxito"})
+    except Usuarios.DoesNotExist:
+        return Response({"error": "No existe"}, status=404)
+    try:
+        usuario = Usuarios.objects.get(pk=pk)
+        persona = usuario.id_per_1
+        data = request.data
+
+        with transaction.atomic():
+            # Actualizamos Persona
+            persona.nom_per = data.get('nom_per', persona.nom_per)
+            persona.ap_pat_per = data.get('ap_pat_per', persona.ap_pat_per)
+            persona.carnet_per = data.get('carnet_per', persona.carnet_per)
+            persona.cel_per = data.get('cel_per', persona.cel_per)
+            persona.save()
+
+            # Actualizamos Usuario
+            usuario.correo_usu = data.get('correo_usu', usuario.correo_usu)
+            if data.get('id_rol_1'):
+                usuario.id_rol_1_id = data.get('id_rol_1')
+            usuario.save()
+
+        return Response({"message": "Actualizado correctamente"})
+    except Usuarios.DoesNotExist:
+        return Response({"error": "No encontrado"}, status=404)
+
+@api_view(['GET'])
+def get_usuario_detalle(request, pk):
+    try:
+        # Buscamos el usuario por su ID (pk)
+        usuario = Usuarios.objects.select_related('id_per_1', 'id_rol_1').get(pk=pk)
+        serializer = UsuarioSerializer(usuario)
+        return Response(serializer.data)
+    except Usuarios.DoesNotExist:
+        return Response({"error": "Usuario no encontrado"}, status=status.HTTP_404_NOT_FOUND)
+    
 
 
 

@@ -8,4 +8,6 @@ urlpatterns = [
     path('crear-personal/', views.crear_personal),
     # Quitamos el 'views.' extra y usamos la función directamente
     path('lista-usuarios/', views.get_usuarios, name='lista-usuarios'),
+    path('usuarios/<int:pk>/', views.get_usuario_detalle), 
+    path('usuarios/<int:pk>/editar/', views.editar_usuario),
 ]
