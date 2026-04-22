@@ -1,7 +1,11 @@
 from django.urls import path
-from .views import get_capillas, estadisticas_parroquia
+from . import views  # Importamos el archivo views.py local
 
 urlpatterns = [
-    path('capillas/', get_capillas),
-    path('estadisticas-bautizos/', estadisticas_parroquia),
+    path('capillas/', views.get_capillas),
+    path('estadisticas-bautizos/', views.estadisticas_parroquia),
+    path('lista-bautizos/', views.get_lista_bautizos),
+    path('crear-personal/', views.crear_personal),
+    # Quitamos el 'views.' extra y usamos la función directamente
+    path('lista-usuarios/', views.get_usuarios, name='lista-usuarios'),
 ]
