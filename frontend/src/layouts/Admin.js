@@ -18,6 +18,7 @@ import UsuariosList from "../components/Usuarios/UsuariosList.jsx";
 import UsuarioForm from "../components/Usuarios/UsuarioForm.jsx";
 
 import CentrosView from "views/admin/Centros.js";
+import CentrosForm from "components/centros/CentrosForm.jsx";
 
 export default function Admin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -48,7 +49,9 @@ export default function Admin() {
             <Route path="/admin/usuarios/editar/:id" exact component={UsuarioForm} />
             <Route path="/admin/capillas" exact component={Maps} />
 
-            <Route path="/admin/centros" exact component={CentrosView} /> 
+            <Route path="/admin/centros" exact component={CentrosView} />
+            <Route path="/admin/centros/nuevo" exact component={CentrosForm} />
+            <Route path="/admin/centros/editar/:id" exact component={CentrosForm} /> 
             <Route path="/admin/capillas" exact component={Maps} />
             {/* ... resto de rutas */}
           </Switch>

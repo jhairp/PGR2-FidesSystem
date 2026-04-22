@@ -2,7 +2,7 @@
 import axios from 'axios';
 
 // La URL de tu servidor Django (asegúrate de que Django esté corriendo en el puerto 8000)
-const API_URL = 'http://127.0.0.1:8000/api/';
+const API_URL = 'http://127.0.0.1:8000/api';
 
 const apiService = axios.create({
   baseURL: API_URL,
@@ -27,26 +27,46 @@ export const getCapillas = async () => {
     return await response.json();
 };
 
-// Agrega estas funciones a tu api.js
-export const getCentros = async () => {
-    try {
-        const response = await fetch('http://localhost:8000/api/centros/'); // Cambia por tu URL real
-        if (!response.ok) throw new Error('Error al obtener centros');
-        return await response.json();
-    } catch (error) {
-        console.error(error);
-        return [];
-    }
+export const getCentroById = async (id) => {
+    const res = await fetch(`${API_URL}/centros/${id}/`);
+    return await res.json();
+};
+
+export const saveCentro = async (data) => {
+    const res = await fetch(`${API_URL}/centros/`, { // <-- Nota la /
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    return await res.json();
+};
+
+export const updateCentro = async (id, data) => {
+    const res = await fetch(`${API_URL}/centros/${id}/`, { // <-- Nota la /
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+    });
+    return await res.json();
 };
 
 export const getParroquias = async () => {
     try {
-        const response = await fetch('http://localhost:8000/api/parroquias/'); // Cambia por tu URL real
-        if (!response.ok) throw new Error('Error al obtener parroquias');
-        return await response.json();
+        const response = await fetch(`${API_URL}/parroquias`);
+        
+        // Si el servidor responde pero con error (404, 500, etc)
+        if (!response.ok) {
+            const errorText = await response.text(); // Leemos el error de Django
+            console.error("Error del servidor Django:", errorText);
+            throw new Error(`Error ${response.status}: ${errorText}`);
+        }
+        
+        const data = await response.json();
+        console.log("Datos de parroquias recibidos:", data); // Verificamos el formato
+        return data;
     } catch (error) {
-        console.error(error);
-        return [];
+        console.error("Fallo total en getParroquias:", error);
+        throw error;
     }
 };
 

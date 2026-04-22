@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import CentrosList from "components/centros/CentrosList.jsx";
-import { getCentros, getParroquias } from "api.js"; 
+import { getCapillas as getCentros, getParroquias } from "api.js";
 
 export default function CentrosView() {
   const [centros, setCentros] = useState([]);

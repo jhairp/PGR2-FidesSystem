@@ -9,9 +9,9 @@ from django.utils.crypto import get_random_string # Para generar la clave tempor
 from rest_framework import status # Para status.HTTP_201_CREATED
 
 # USUARIOS
-from .models import Usuarios, Personas, Rols, Centros
+from .models import Usuarios, Personas, Rols, Centros, Parroquias
 from .PerUsu import UsuarioSerializer
-from .ParCen import CentrosSerializer
+from .ParCen import CentrosSerializer, ParroquiasSerializer
 
 
 @api_view(['POST'])
@@ -159,6 +159,52 @@ def get_centros_db(request):
     # Devolvemos la data procesada
     return Response(serializer.data)
 
+@api_view(['GET', 'PUT', 'DELETE'])
+def detalle_centro_db(request, pk):
+    try:
+        centro = Centros.objects.get(pk=pk)
+    except Centros.DoesNotExist:
+        return Response({'error': 'Centro no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = CentrosSerializer(centro)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        # Cambiamos partial=True por si no mandas todos los campos
+        serializer = CentrosSerializer(centro, data=request.data, partial=True)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        centro.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+# También asegúrate de que el POST esté en tu vista de lista (la que ya tenías)
+@api_view(['GET', 'POST'])
+def get_centros_db(request):
+    if request.method == 'GET':
+        centros = Centros.objects.all()
+        serializer = CentrosSerializer(centros, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = CentrosSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    
+@api_view(['GET'])
+def get_parroquias_db(request):
+    try:
+        parroquias = Parroquias.objects.all()
+        serializer = ParroquiasSerializer(parroquias, many=True)
+        return Response(serializer.data)
+    except Exception as e:
+        return Response({'error': str(e)}, status=500)
 
 
 

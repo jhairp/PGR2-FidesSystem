@@ -128,4 +128,5 @@ STATIC_URL = 'static/'
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:5173", # Puerto por defecto de Vite
     "http://localhost:3000", # Puerto por defecto de Create React App
+    "http://127.0.0.1:3000",
 ]
