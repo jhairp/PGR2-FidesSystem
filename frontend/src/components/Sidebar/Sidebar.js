@@ -16,10 +16,10 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
 
   return (
     <nav 
-  className={`fixed top-0 left-0 h-full z-60 transition-all duration-300 ease-in-out bg-white border-r border-blueGray-200 
-  ${isCollapsed ? "w-20" : "w-64"} 
-  hidden md:flex flex-col m-0 p-0 shadow-sm`} // Agregamos p-0 y m-0 explícito
->
+      className={`fixed top-0 left-0 h-full z-60 transition-all duration-300 ease-in-out bg-white border-r border-blueGray-200 
+      ${isCollapsed ? "w-20" : "w-64"} 
+      hidden md:flex flex-col m-0 p-0 shadow-sm`} // Agregamos p-0 y m-0 explícito
+    >
       {/* Cabecera */}
       <div className={`flex items-center ${isCollapsed ? "justify-center" : "justify-between"} h-20 px-4 mb-2`}>
         {!isCollapsed && (
@@ -39,22 +39,22 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }) {
       <ul className="flex flex-col list-none px-3">
         {navLinks.map((link) => (
           <li key={link.to} className="mb-1">
-<Link
-  to={link.to}
-  className={`flex items-center p-3 rounded-lg transition-all duration-200 mx-2
-    ${isActive(link.to) 
-      ? "bg-lightBlue-500 text-white shadow-md" 
-      : "text-blueGray-500 hover:bg-blueGray-100"}`}
->
-  <div className={`flex items-center justify-center ${isCollapsed ? "w-full" : "w-10"}`}>
-    <i className={`${link.icon} text-lg`}></i>
-  </div>
-  {!isCollapsed && (
-    <span className="ml-3 text-xs uppercase font-bold whitespace-nowrap">
-      {link.label}
-    </span>
-  )}
-</Link>
+            <Link
+              to={link.to}
+              className={`flex items-center p-3 rounded-lg transition-all duration-200 mx-2
+                ${isActive(link.to) 
+                  ? "bg-lightBlue-500 text-white shadow-md" 
+                  : "text-blueGray-500 hover:bg-blueGray-100"}`}
+            >
+              <div className={`flex items-center justify-center ${isCollapsed ? "w-full" : "w-10"}`}>
+                <i className={`${link.icon} text-lg`}></i>
+              </div>
+              {!isCollapsed && (
+                <span className="ml-3 text-xs uppercase font-bold whitespace-nowrap">
+                  {link.label}
+                </span>
+              )}
+            </Link>
           </li>
         ))}
       </ul>

@@ -2,14 +2,81 @@ from django.db.models.functions import ExtractMonth
 from django.db.models import Count
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
-# Asegúrate de importar tu modelo de Bautizo
-# from .models import Bautizo 
+
+from django.db import transaction # Para transaction.atomic()
+from django.contrib.auth.hashers import make_password # Para encriptar contraseñas
+from django.utils.crypto import get_random_string # Para generar la clave temporal
+from rest_framework import status # Para status.HTTP_201_CREATED
+
+# USUARIOS
+from .models import Usuarios, Personas, Rols
+from .PerUsu import UsuarioSerializer
+
+@api_view(['POST'])
+def crear_personal(request):
+    data = request.data
+    
+    try:
+        # Iniciamos una transacción (como el DB::beginTransaction de Laravel)
+        with transaction.atomic():
+            # 1. Creamos la Persona
+            nueva_persona = Personas.objects.create(
+                nom_per=data.get('nom_per'),
+                ap_pat_per=data.get('ap_pat_per'),
+                carnet_per=data.get('carnet_per'),
+                cel_per=data.get('cel_per'),
+                id_per_rol_1_id=1  # ID fijo para 'Personal' como en tu Laravel
+            )
+
+            # 2. Generamos clave aleatoria
+            password_temporal = get_random_string(10)
+
+            # 3. Creamos el Usuario vinculado a esa persona
+            nuevo_usuario = Usuarios.objects.create(
+                correo_usu=data.get('correo_usu'),
+                password=make_password(password_temporal), # Cambiado 'contra_usu' por 'password'
+                estado_usu='activo',
+                id_per_1=nueva_persona,
+                id_rol_1_id=data.get('id_rol_1')
+            )
+
+            # Aquí podrías poner el código de enviar correo más adelante
+            
+            # 4. Devolvemos la respuesta usando tu serializador PerUsu
+            serializer = UsuarioSerializer(nuevo_usuario)
+            return Response({
+                "message": "Trabajador creado con éxito",
+                "clave_temporal": password_temporal, # Para que la veas mientras pruebas
+                "user": serializer.data
+            }, status=status.HTTP_201_CREATED)
+
+    except Exception as e:
+        return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET'])
+def get_usuarios(request):
+    # Usamos select_related para traer la persona y el rol en una sola consulta (optimización)
+    usuarios = Usuarios.objects.select_related('id_per_1', 'id_rol_1').all()
+    serializer = UsuarioSerializer(usuarios, many=True)
+    return Response(serializer.data)
+
+@api_view(['POST'])
+def cambiar_estado(request, pk):
+    usuario = Usuarios.objects.get(pk=pk)
+    usuario.estado_usu = 'inactivo' if usuario.estado_usu == 'activo' else 'activo'
+    usuario.save()
+    return Response({'nuevo_estado': usuario.estado_usu})
+
+
+
+
 
 @api_view(['GET'])
 def get_capillas(request):
     capillas = [
         {
             "id": 1,
+
             "nombre": "Parroquia Central San Pedro",
             "lat": -16.4994, 
             "lng": -68.1353,
@@ -89,3 +156,13 @@ def estadisticas_parroquia(request):
         {"mes": "Jun", "bautizos": 33, "matrimonios": 30},
     ]
     return Response(formatted_data)
+
+@api_view(['GET'])
+def get_lista_bautizos(request):
+    # Datos de ejemplo que recibirá la tabla
+    bautizos = [
+        {"id": 1, "nombre": "Juan Pérez", "padres": "Pedro y María", "fecha": "2024-03-15", "parroquia": "San Pedro"},
+        {"id": 2, "nombre": "Lucía Gómez", "padres": "Carlos y Ana", "fecha": "2024-03-20", "parroquia": "Sopocachi"},
+        {"id": 3, "nombre": "Mateo Mamani", "padres": "Luis y Elena", "fecha": "2024-04-01", "parroquia": "Medalla Milagrosa"},
+    ]
+    return Response(bautizos)

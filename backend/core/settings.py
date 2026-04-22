@@ -79,8 +79,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'PGR2SISPAR',      # El nombre de la base de datos de tu backup
+        'USER': 'postgres',          # Tu usuario de PostgreSQL (por defecto es postgres)
+        'PASSWORD': 'JHAIR12345', # Pon aquí la contraseña que usas en pgAdmin
+        'HOST': '127.0.0.1',         # O 'localhost'
+        'PORT': '5432',              # Puerto por defecto de Postgres
     }
 }
 

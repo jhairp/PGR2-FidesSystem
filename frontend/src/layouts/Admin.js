@@ -12,6 +12,9 @@ import Dashboard from "views/admin/Dashboard.js";
 import Maps from "views/admin/Maps.js";
 import Settings from "views/admin/Settings.js";
 import Tables from "views/admin/Tables.js";
+import Bautizos from "views/admin/Bautizos.js";
+
+import UsuariosList from "../components/Usuarios/UsuariosList.jsx";
 
 export default function Admin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -36,7 +39,7 @@ export default function Admin() {
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
             <Route path="/admin/dashboard" exact component={Dashboard} />
-            <Route path="/admin/usuarios" exact component={Settings} />
+            <Route path="/admin/usuarios" exact component={UsuariosList} />
             <Route path="/admin/capillas" exact component={Maps} />
             <Route path="/admin/bautizos" exact component={Tables} /> 
             <Route path="/admin/calendario" exact component={Settings} />
