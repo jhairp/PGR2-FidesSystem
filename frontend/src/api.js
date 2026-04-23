@@ -11,6 +11,12 @@ const apiService = axios.create({
   },
 });
 
+export const getCentros = async () => {
+    const response = await fetch(`${API_URL}/centros/`); // Asegúrate que esta sea tu ruta en Django
+    if (!response.ok) throw new Error("Error al obtener centros");
+    return await response.json();
+};
+
 export const getSaludo = async () => {
     try {
         const response = await apiService.get('saludo/');
@@ -69,5 +75,52 @@ export const getParroquias = async () => {
         throw error;
     }
 };
+
+export const getEventos = async () => {
+    const response = await fetch(`${API_URL}/eventos/`); // Ajusta según tu urls.py
+    if (!response.ok) throw new Error("Error al obtener eventos");
+    return await response.json();
+};
+
+export const saveEvento = async (data) => {
+    try {
+        const res = await fetch(`${API_URL}/eventos/`, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+            const errorData = await res.json();
+            console.error("Error de Django:", errorData);
+            throw errorData;
+        }
+        return await res.json();
+    } catch (error) {
+        console.error("Error en saveEvento:", error);
+        throw error;
+    }
+};
+
+export const updateEvento = async (id, data) => {
+    try {
+        const res = await fetch(`${API_URL}/eventos/${id}/`, {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(data)
+        });
+        if (!res.ok) {
+            const errorData = await res.json();
+            console.error("Error de Django:", errorData);
+            throw errorData;
+        }
+        return await res.json();
+    } catch (error) {
+        console.error("Error en updateEvento:", error);
+        throw error;
+    }
+};
+
+export const getEventosById = (id) => 
+    fetch(`${API_URL}/eventos/${id}/`).then(res => res.json());
 
 export default apiService;

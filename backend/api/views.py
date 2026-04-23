@@ -9,9 +9,10 @@ from django.utils.crypto import get_random_string # Para generar la clave tempor
 from rest_framework import status # Para status.HTTP_201_CREATED
 
 # USUARIOS
-from .models import Usuarios, Personas, Rols, Centros, Parroquias
+from .models import Eventos, Usuarios, Personas, Rols, Centros, Parroquias
 from .PerUsu import UsuarioSerializer
 from .ParCen import CentrosSerializer, ParroquiasSerializer
+from .serializers import EventosSerializer
 
 
 @api_view(['POST'])
@@ -205,6 +206,49 @@ def get_parroquias_db(request):
         return Response(serializer.data)
     except Exception as e:
         return Response({'error': str(e)}, status=500)
+
+
+
+
+
+@api_view(['GET', 'POST'])
+def gestion_eventos(request):
+    if request.method == 'GET':
+        eventos = Eventos.objects.all()
+        serializer = EventosSerializer(eventos, many=True)
+        return Response(serializer.data)
+    
+    elif request.method == 'POST':
+        serializer = EventosSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['GET', 'PUT', 'DELETE'])
+def gestion_eventos_detalle(request, pk):
+    try:
+        evento = Eventos.objects.get(pk=pk)
+    except Eventos.DoesNotExist:
+        return Response({'error': 'Evento no encontrado'}, status=status.HTTP_404_NOT_FOUND)
+
+    if request.method == 'GET':
+        serializer = EventosSerializer(evento)
+        return Response(serializer.data)
+
+    elif request.method == 'PUT':
+        serializer = EventosSerializer(evento, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+    elif request.method == 'DELETE':
+        evento.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
+
 
 
 

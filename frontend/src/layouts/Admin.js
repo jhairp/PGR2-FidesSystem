@@ -20,11 +20,16 @@ import UsuarioForm from "../components/Usuarios/UsuarioForm.jsx";
 import CentrosView from "views/admin/Centros.js";
 import CentrosForm from "components/centros/CentrosForm.jsx";
 
+import EventosCalendario from "views/admin/EventosCalendario.js";
+import EventosForm from "components/Eventos/EventosForm.jsx";
+
 export default function Admin() {
   const [isCollapsed, setIsCollapsed] = useState(false);
   
   // 1. Detectar si estamos en la ruta de mapas
-  const isMapsPage = window.location.href.indexOf("/admin/capillas") !== -1;
+  const isMapsPage = 
+    window.location.href.indexOf("/admin/capillas") !== -1 || 
+    window.location.href.indexOf("/admin/calendario") !== -1;
   return (
     <>
       <Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
@@ -53,6 +58,10 @@ export default function Admin() {
             <Route path="/admin/centros/nuevo" exact component={CentrosForm} />
             <Route path="/admin/centros/editar/:id" exact component={CentrosForm} /> 
             <Route path="/admin/capillas" exact component={Maps} />
+
+            <Route path="/admin/calendario" exact component={EventosCalendario} />
+            <Route path="/admin/eventos/nuevo" exact component={EventosForm} />
+            <Route path="/admin/eventos/editar/:id" exact component={EventosForm} />
             {/* ... resto de rutas */}
           </Switch>
 

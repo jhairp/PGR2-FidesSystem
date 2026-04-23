@@ -16,4 +16,7 @@ urlpatterns = [
     path('lista-usuarios/', views.get_usuarios, name='lista-usuarios'),
     path('usuarios/<int:pk>/', views.get_usuario_detalle), 
     path('usuarios/<int:pk>/editar/', views.editar_usuario),
+
+    path('eventos/', views.gestion_eventos, name='eventos'),
+    path('eventos/<int:pk>/', views.gestion_eventos_detalle, name='eventos-detalle'),
 ]
