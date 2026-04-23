@@ -132,19 +132,35 @@ class Documentos(models.Model):
 
 
 class Eventos(models.Model):
+    # Definimos los estados posibles como constantes para evitar errores de dedo
+    PENDIENTE = 'pendiente'
+    APROBADO = 'aprobado'
+    CANCELADO = 'cancelado'
+
+    ESTADO_CHOICES = [
+        (PENDIENTE, 'Pendiente'),
+        (APROBADO, 'Aprobado'),
+        (CANCELADO, 'Cancelado'),
+    ]
+
     id_eve = models.BigAutoField(primary_key=True)
     tipo_eve = models.CharField(max_length=255)
     fecha_eve = models.DateField()
     hora_eve = models.TimeField()
-    estado_eve = models.CharField(max_length=255)
+    # Actualizamos este campo con las opciones
+    estado_eve = models.CharField(
+        max_length=255, 
+        choices=ESTADO_CHOICES, 
+        default=PENDIENTE
+    )
     detalle_eve = models.TextField(blank=True, null=True)
     id_cen_3 = models.ForeignKey(Centros, models.DO_NOTHING, db_column='id_cen_3')
     id_com_1 = models.ForeignKey(Comprobantes, models.DO_NOTHING, db_column='id_com_1', blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = False # Mantén esto si la tabla ya existe en tu DB
         db_table = 'eventos'
 
 

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useHistory, useParams, useLocation } from "react-router-dom";
-import { getCentros, getEventosById, saveEvento, updateEvento } from "api.js"; // Asegúrate de tener estas funciones en api.js
+import { getCentros, getEventosById, saveEvento, updateEvento } from "api.js";
 
 export default function EventosForm() {
   const { id } = useParams();
@@ -13,18 +13,20 @@ export default function EventosForm() {
     tipo_eve: "",
     fecha_eve: fechaQuery || "",
     hora_eve: "08:00",
-    estado_eve: "activo",
+    estado_eve: "pendiente", // Cambio: Estado inicial por defecto
     detalle_eve: "",
     id_cen_3: "",
-    id_com_1: null, // Como pediste, nulo por defecto
+    id_com_1: null,
   });
 
   useEffect(() => {
-    // Cargar centros para el select
     getCentros().then(setCentros);
 
     if (id) {
-      getEventosById(id).then((data) => setFormData(data));
+      getEventosById(id).then((data) => {
+        // Aseguramos que si el dato viene de la DB se cargue correctamente
+        setFormData(data);
+      });
     }
   }, [id]);
 
@@ -50,7 +52,7 @@ export default function EventosForm() {
             {id ? "Editar Evento" : "Nuevo Evento"}
           </h6>
           <button
-            className="bg-blueGray-700 text-white active:bg-blueGray-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150"
+            className="bg-blueGray-700 text-white active:bg-blueGray-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1"
             onClick={() => history.push("/admin/calendario")}
           >
             Volver
@@ -69,6 +71,7 @@ export default function EventosForm() {
               </label>
               <input
                 type="text"
+                placeholder="Ej. Bautizo, Boda, Misa"
                 className="border-0 px-3 py-3 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                 value={formData.tipo_eve}
                 onChange={(e) => setFormData({...formData, tipo_eve: e.target.value})}
@@ -91,6 +94,7 @@ export default function EventosForm() {
                 ))}
               </select>
             </div>
+            
             <div className="w-full lg:w-4/12 px-4 mt-4">
               <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
                 Fecha
@@ -115,20 +119,26 @@ export default function EventosForm() {
                 required
               />
             </div>
+
             <div className="w-full lg:w-4/12 px-4 mt-4">
               <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
-                Estado
+                Estado de la Reserva
               </label>
               <select
-                className="border-0 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
+                className={`border-0 px-3 py-3 rounded text-sm shadow focus:outline-none focus:ring w-full font-bold ${
+                  formData.estado_eve === 'pendiente' ? 'bg-yellow-100 text-yellow-700' :
+                  formData.estado_eve === 'aprobado' ? 'bg-blue-100 text-blue-700' :
+                  'bg-green-100 text-green-700'
+                }`}
                 value={formData.estado_eve}
                 onChange={(e) => setFormData({...formData, estado_eve: e.target.value})}
               >
-                <option value="activo">Activo</option>
-                <option value="cancelado">Cancelado</option>
-                <option value="finalizado">Finalizado</option>
+                <option value="pendiente"> Pendiente</option>
+                <option value="aprobado"> Aprobado</option>
+                <option value="cancelado"> Cancelado</option>
               </select>
             </div>
+
             <div className="w-full px-4 mt-4">
               <label className="block uppercase text-blueGray-600 text-xs font-bold mb-2">
                 Detalles / Observaciones
@@ -136,6 +146,7 @@ export default function EventosForm() {
               <textarea
                 className="border-0 px-3 py-3 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full"
                 rows="4"
+                placeholder="Información adicional del evento..."
                 value={formData.detalle_eve}
                 onChange={(e) => setFormData({...formData, detalle_eve: e.target.value})}
               ></textarea>
@@ -143,9 +154,9 @@ export default function EventosForm() {
           </div>
           <button
             type="submit"
-            className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-4 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mt-6 ml-4"
+            className="bg-lightBlue-500 text-white active:bg-lightBlue-600 font-bold uppercase text-xs px-6 py-3 rounded shadow hover:shadow-md outline-none focus:outline-none mt-6 ml-4 ease-linear transition-all duration-150"
           >
-            Guardar Cambios
+            {id ? "Actualizar Evento" : "Crear Evento"}
           </button>
         </form>
       </div>

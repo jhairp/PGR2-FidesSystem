@@ -27,20 +27,32 @@ const EventosCalendario = () => {
         return;
       }
 
-      const eventosFormateados = data.map((e) => ({
-        id: String(e.id_eve), // FullCalendar prefiere IDs como strings
-        title: `${e.tipo_eve || "Evento"}`,
-        // Aseguramos formato ISO8601. Si hora_eve viene como "08:00", lo acepta bien.
-        start: `${e.fecha_eve}T${e.hora_eve}`, 
-        extendedProps: {
-          centro: e.nombre_centro || "Sin centro",
-          estado: e.estado_eve,
-          detalle: e.detalle_eve
-        },
-        // Colores consistentes con Tailwind
-        backgroundColor: e.estado_eve === 'activo' ? '#0284c7' : '#e11d48', 
-        borderColor: 'transparent',
-      }));
+      const eventosFormateados = data.map((e) => {
+        // 1. Definimos el mapeo de colores
+        const coloresEstado = {
+          'pendiente': '#FBBF24', // Amarillo (Tailwind yellow-400)
+          'aprobado': '#3B82F6',  // Azul (Tailwind blue-500)
+          'cancelado': '#22C55E', // Verde (Tailwind green-500)
+        };
+
+        // 2. Asignamos el color basado en e.estado_eve
+        // Si el estado no coincide, ponemos un gris por defecto
+        const colorAsignado = coloresEstado[e.estado_eve] || '#94A3B8';
+
+        return {
+          id: String(e.id_eve),
+          title: `${e.tipo_eve || "Evento"}`,
+          start: `${e.fecha_eve}T${e.hora_eve}`, 
+          extendedProps: {
+            centro: e.nombre_centro || "Sin centro",
+            estado: e.estado_eve,
+            detalle: e.detalle_eve
+          },
+          // 3. Aplicamos el color al fondo y al borde
+          backgroundColor: colorAsignado,
+          borderColor: colorAsignado,
+        };
+      });
 
       setEventos(eventosFormateados);
     } catch (error) {
