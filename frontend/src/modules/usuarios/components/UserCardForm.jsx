@@ -101,31 +101,31 @@ export default function UserCardForm({ data, setData, errors, roles, isEditing, 
 
                         <div className="mt-auto pt-10 flex items-center justify-between">
                             <div className="flex gap-4">
-    {readOnly ? (
-        /* BOTÓN PARA ACTIVAR EDICIÓN */
-        <button 
-            type="button"  /* <--- CRUCIAL: evita que el formulario se envíe */
-            onClick={(e) => {
-                e.preventDefault();
-                setReadOnly(false);
-            }} 
-            className="bg-slate-900 text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl hover:bg-indigo-600 transition-all flex items-center gap-2"
-        >
-            <Edit3 size={14} /> Editar Información
-        </button>
-    ) : (
-        /* BOTÓN PARA GUARDAR CAMBIOS */
-        <button 
-            key="save-button"
-            form="user-form" 
-            type="submit" 
-            disabled={processing} 
-            className="bg-emerald-500 text-white px-10 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all flex items-center gap-2"
-        >
-            {processing ? "Guardando..." : (isEditing ? "Actualizar Datos" : "Emitir Acceso")}
-        </button>
-    )}
-</div>
+                                {readOnly ? (
+                                    /* BOTÓN PARA ACTIVAR EDICIÓN */
+                                    <button 
+                                        type="button"  /* <--- CRUCIAL: evita que el formulario se envíe */
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            setReadOnly(false);
+                                        }} 
+                                        className="bg-slate-900 text-white px-8 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-xl hover:bg-indigo-600 transition-all flex items-center gap-2"
+                                    >
+                                        <Edit3 size={14} /> Editar Información
+                                    </button>
+                                ) : (
+                                    /* BOTÓN PARA GUARDAR CAMBIOS */
+                                    <button 
+                                        key="save-button"
+                                        form="user-form" 
+                                        type="submit" 
+                                        disabled={processing} 
+                                        className="bg-emerald-500 text-white px-10 py-3 rounded-xl font-black text-[10px] uppercase tracking-widest shadow-lg shadow-emerald-500/20 hover:bg-emerald-600 transition-all flex items-center gap-2"
+                                    >
+                                        {processing ? "Guardando..." : (isEditing ? "Actualizar Datos" : "Emitir Acceso")}
+                                    </button>
+                                )}
+                            </div>
                         </div>
                     </div>
                 </div>
