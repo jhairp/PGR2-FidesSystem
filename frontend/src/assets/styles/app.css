@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Esta línea es la clave para que el modo oscuro funcione en v4 */
+@variant dark (&:where(.dark, .dark *));
+
+@theme {
+  --color-dark-bg: #121418;
+  --color-dark-card: #1a1d23;
+}
