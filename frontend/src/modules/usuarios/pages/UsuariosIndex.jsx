@@ -1,18 +1,15 @@
 import useUsuarios from '../hooks/useUsuarios'
-
-import UsuarioHeader from '../components/UsuarioHeader'
-
 import UsuarioTable from '../components/UsuarioTable'
-
 import UsuarioModal from '../components/UsuarioModal'
-
 import UsuarioViewCard from '../components/UsuarioViewCard'
-
 import TableControls from '../../../components/ui/TableControls'
-
 import ActionOverlay from '../../../components/ui/ActionOverlay'
-
 import TopAlert from '../../../components/ui/TopAlert'
+import PageHeader from '../../../components/ui/PageHeader'
+import {
+    CreateButton,
+    ReportButton,
+} from '../../../components/ui/Buttons'
 
 export default function UsuariosIndex() {
 
@@ -62,8 +59,23 @@ export default function UsuariosIndex() {
                 message={topAlert.message}
             />
 
-            <UsuarioHeader
-                abrirModal={abrirModal}
+            <PageHeader
+                title="Usuarios"
+                subtitle="Gestión de Usuarios"
+
+                actions={
+                    <>
+
+                        <ReportButton />
+
+                        <CreateButton
+                            onClick={abrirModal}
+                        >
+                            Nuevo Usuario
+                        </CreateButton>
+
+                    </>
+                }
             />
 
             <TableControls

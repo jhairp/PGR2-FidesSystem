@@ -62,13 +62,6 @@ export default function UsuarioViewCard({
 
                 <div className="w-full md:w-[280px] bg-violet-600 p-8 flex flex-col items-center justify-between text-white relative transition-colors duration-500 overflow-hidden">
 
-                    <button
-                        onClick={onClose}
-                        className="absolute top-5 right-5 z-30 w-9 h-9 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center transition"
-                    >
-                        <X size={16} />
-                    </button>
-
                     <div className="absolute top-0 right-0 p-4 opacity-10">
 
                         <Shield
