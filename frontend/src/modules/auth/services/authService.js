@@ -1,10 +1,13 @@
-import api from '../../../api/axios'
+import api from '@/api/axios'
 
-export const login = async (data) => {
+export const loginRequest = async (data) => {
 
     const response = await api.post(
         '/login/',
-        data
+        {
+            correo_usu: data.correo_usu,
+            password: data.password,
+        }
     )
 
     return response.data

@@ -1,15 +1,15 @@
 import {
     createContext,
     useContext,
-    useEffect,
     useState,
+    useEffect,
 } from 'react'
 
-const AuthContext = createContext()
+import { loginRequest } from '../services/authService'
 
-export function AuthProvider({
-    children,
-}) {
+export const AuthContext = createContext()
+
+export const AuthProvider = ({ children }) => {
 
     const [user, setUser] = useState(null)
 
@@ -17,13 +17,15 @@ export function AuthProvider({
 
     useEffect(() => {
 
-        const token =
-            localStorage.getItem('access')
+        const token = localStorage.getItem('token')
 
-        if (token) {
+        const refresh = localStorage.getItem('refresh')
+
+        if (token && refresh) {
 
             setUser({
-                authenticated: true,
+                token,
+                refresh,
             })
         }
 
@@ -31,13 +33,61 @@ export function AuthProvider({
 
     }, [])
 
+    const login = async (
+        correo_usu,
+        password
+    ) => {
+
+        try {
+
+            const response = await loginRequest({
+                correo_usu,
+                password,
+            })
+
+            localStorage.setItem(
+                'token',
+                response.access
+            )
+
+            localStorage.setItem(
+                'refresh',
+                response.refresh
+            )
+
+            setUser({
+                token: response.access,
+                refresh: response.refresh,
+            })
+
+            return response
+
+        } catch (error) {
+
+            console.error(error)
+
+            throw error
+        }
+    }
+
+    const logout = () => {
+
+        localStorage.removeItem('token')
+
+        localStorage.removeItem('refresh')
+
+        setUser(null)
+    }
+
     return (
 
         <AuthContext.Provider
             value={{
                 user,
-                setUser,
+                login,
+                logout,
                 loading,
+                isAuthenticated: !!user,
             }}
         >
 
@@ -47,5 +97,7 @@ export function AuthProvider({
     )
 }
 
-export const useAuthContext = () =>
-    useContext(AuthContext)
+export const useAuth = () => {
+
+    return useContext(AuthContext)
+}

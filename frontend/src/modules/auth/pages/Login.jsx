@@ -1,6 +1,4 @@
-import React, {
-    useState,
-} from 'react'
+import React, { useState } from 'react'
 
 import {
     Link,
@@ -14,13 +12,13 @@ import {
     ArrowRight,
 } from 'lucide-react'
 
-import useAuth from '../hooks/useAuth'
+import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
 
     const navigate = useNavigate()
 
-    const { handleLogin } = useAuth()
+    const { login } = useAuth()
 
     const [data, setData] = useState({
 
@@ -45,25 +43,19 @@ export default function Login() {
 
             setErrors({})
 
-            const response =
-                await handleLogin(data)
+            await login(
+                data.correo_usu,
+                data.password
+            )
 
-            if (response.success) {
+            navigate('/')
 
-                navigate('/')
-            }
+        } catch (err) {
 
-            else {
-
-                setErrors({
-                    general:
-                        'Credenciales incorrectas'
-                })
-            }
-
-        } catch (error) {
-
-            console.log(error)
+            setErrors({
+                general:
+                    'Credenciales incorrectas'
+            })
 
         } finally {
 
@@ -206,6 +198,7 @@ export default function Login() {
                         {/* BOTÓN */}
 
                         <button
+                            type="submit"
                             disabled={processing}
                             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-[0.2em] py-4 rounded-2xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2 group disabled:opacity-50"
                         >
