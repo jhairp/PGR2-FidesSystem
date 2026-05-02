@@ -37,10 +37,12 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
     'rest_framework',
     'corsheaders',
 
     'apps.usuarios',
+    'apps.authentication',
 ]
 
 MIDDLEWARE = [
@@ -48,7 +50,6 @@ MIDDLEWARE = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
@@ -81,7 +82,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'FidesSystem2',      # El nombre de la base de datos de tu backup
+        'NAME': 'PGR2SISPAR',      # El nombre de la base de datos de tu backup
         'USER': 'postgres',          # Tu usuario de PostgreSQL (por defecto es postgres)
         'PASSWORD': 'JHAIR12345', # Pon aquí la contraseña que usas en pgAdmin
         'HOST': '127.0.0.1',         # O 'localhost'
@@ -109,6 +110,9 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 
+AUTH_USER_MODEL = 'usuarios.Usuarios'
+
+
 # Internationalization
 # https://docs.djangoproject.com/en/6.0/topics/i18n/
 
@@ -131,3 +135,9 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000", # Puerto por defecto de Create React App
     "http://127.0.0.1:3000",
 ]
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}

@@ -6,12 +6,19 @@ import Dashboard from '../pages/Dashboard'
 
 import UsuariosIndex from '../modules/usuarios/pages/UsuariosIndex'
 
+import Login from '../modules/auth/pages/Login'
+
 export default function AppRoutes() {
 
     return (
 
         <Routes>
 
+            <Route
+                path="/login"
+                element={<Login />}
+            />
+            
             <Route
                 path="/"
                 element={

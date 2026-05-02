@@ -1,130 +1,260 @@
-import React from 'react';
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { Cross, Lock, Mail, ArrowRight } from 'lucide-react';
+import React, {
+    useState,
+} from 'react'
+
+import {
+    Link,
+    useNavigate,
+} from 'react-router-dom'
+
+import {
+    Cross,
+    Lock,
+    Mail,
+    ArrowRight,
+} from 'lucide-react'
+
+import useAuth from '../hooks/useAuth'
 
 export default function Login() {
-   const navigate = useNavigate();
+
+    const navigate = useNavigate()
+
+    const { handleLogin } = useAuth()
 
     const [data, setData] = useState({
+
         correo_usu: '',
+
         password: '',
-    });
+    })
 
-    const [processing, setProcessing] = useState(false);
+    const [processing, setProcessing] =
+        useState(false)
 
-    const [errors, setErrors] = useState({});
+    const [errors, setErrors] =
+        useState({})
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    const handleSubmit = async (e) => {
+
+        e.preventDefault()
+
         try {
-            setProcessing(true);
 
-            const response = await axios.post(
-                'http://localhost:8000/api/login',
-                data
-            );
+            setProcessing(true)
 
-            console.log(response.data);
+            setErrors({})
 
-            navigate('/');
+            const response =
+                await handleLogin(data)
+
+            if (response.success) {
+
+                navigate('/')
+            }
+
+            else {
+
+                setErrors({
+                    general:
+                        'Credenciales incorrectas'
+                })
+            }
 
         } catch (error) {
 
-            if (error.response?.data?.errors) {
-                setErrors(error.response.data.errors);
-            }
+            console.log(error)
 
         } finally {
-            setProcessing(false);
+
+            setProcessing(false)
         }
-    };
+    }
 
     return (
+
         <div className="min-h-screen bg-slate-50 dark:bg-[#0F111A] flex items-center justify-center p-4">
 
             <div className="w-full max-w-md">
-                {/* Logo y Encabezado */}
+
+                {/* LOGO */}
+
                 <div className="flex flex-col items-center mb-10">
+
                     <div className="w-16 h-16 bg-indigo-600 rounded-[2.5rem] flex items-center justify-center text-white shadow-2xl shadow-indigo-500/20 mb-4">
+
                         <Cross size={32} />
+
                     </div>
+
                     <div className="text-center">
-                        <h1 className="font-black text-3xl tracking-tighter dark:text-white uppercase block">Curia</h1>
-                        <span className="text-xs font-bold text-indigo-500 uppercase tracking-[0.4em]">Digital</span>
+
+                        <h1 className="font-black text-3xl tracking-tighter dark:text-white uppercase block">
+
+                            Curia
+
+                        </h1>
+
+                        <span className="text-xs font-bold text-indigo-500 uppercase tracking-[0.4em]">
+
+                            Digital
+
+                        </span>
+
                     </div>
+
                 </div>
 
-                {/* Card de Login */}
+                {/* CARD */}
+
                 <div className="bg-white dark:bg-[#11141D] p-8 rounded-[2rem] border border-slate-200 dark:border-slate-800 shadow-xl shadow-slate-200/50 dark:shadow-none">
-                    <form onSubmit={handleSubmit} className="space-y-5">
-                        {/* Email */}
+
+                    <form
+                        onSubmit={handleSubmit}
+                        className="space-y-5"
+                    >
+
+                        {/* ERROR */}
+
+                        {errors.general && (
+
+                            <div className="bg-rose-100 text-rose-600 text-sm font-bold rounded-2xl p-4">
+
+                                {errors.general}
+
+                            </div>
+                        )}
+
+                        {/* EMAIL */}
+
                         <div>
-                            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Correo Electrónico</label>
+
+                            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">
+
+                                Correo Electrónico
+
+                            </label>
+
                             <div className="relative">
-                                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+
+                                <Mail
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                                    size={18}
+                                />
+
                                 <input
                                     type="email"
+
                                     value={data.correo_usu}
-                                    onChange={e => setData({
-                                        ...data,
-                                        correo_usu: e.target.value
-                                    })}
+
+                                    onChange={(e) =>
+                                        setData({
+                                            ...data,
+                                            correo_usu:
+                                                e.target.value,
+                                        })
+                                    }
+
                                     className="w-full bg-slate-50 dark:bg-[#1A1F2B] border-none focus:ring-2 focus:ring-indigo-500 rounded-2xl py-3 pl-12 pr-4 dark:text-white transition-all"
+
                                     placeholder="ejemplo@gmail.com"
                                 />
+
                             </div>
-                            {errors.correo_usu && <p className="mt-2 text-rose-500 text-xs font-bold px-1">{errors.correo_usu}</p>}
+
                         </div>
 
-                        {/* Password */}
+                        {/* PASSWORD */}
+
                         <div>
-                            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">Contraseña</label>
+
+                            <label className="block text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2 px-1">
+
+                                Contraseña
+
+                            </label>
+
                             <div className="relative">
-                                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400" size={18} />
+
+                                <Lock
+                                    className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400"
+                                    size={18}
+                                />
+
                                 <input
                                     type="password"
+
                                     value={data.password}
-                                    onChange={e => setData('password', e.target.value)}
+
+                                    onChange={(e) =>
+                                        setData({
+                                            ...data,
+                                            password:
+                                                e.target.value,
+                                        })
+                                    }
+
                                     className="w-full bg-slate-50 dark:bg-[#1A1F2B] border-none focus:ring-2 focus:ring-indigo-500 rounded-2xl py-3 pl-12 pr-4 dark:text-white transition-all"
+
                                     placeholder="••••••••"
                                 />
+
                             </div>
-                            {errors.password && <p className="mt-2 text-rose-500 text-xs font-bold px-1">{errors.password}</p>}
+
                         </div>
 
-                        {/* Botón Entrar */}
+                        {/* BOTÓN */}
+
                         <button
                             disabled={processing}
                             className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-black text-xs uppercase tracking-[0.2em] py-4 rounded-2xl transition-all shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2 group disabled:opacity-50"
                         >
-                            {processing ? 'Iniciando...' : (
-                                <>
-                                    Entrar al Sistema
-                                    <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
-                                </>
-                            )}
+
+                            {processing
+
+                                ? 'Iniciando...'
+
+                                : (
+
+                                    <>
+
+                                        Entrar al Sistema
+
+                                        <ArrowRight
+                                            size={16}
+                                            className="group-hover:translate-x-1 transition-transform"
+                                        />
+
+                                    </>
+                                )}
+
                         </button>
+
                     </form>
 
-                    {/* Google Login (Opcional, basado en tu blade anterior) */}
-                    <div className="mt-8 pt-8 border-t border-slate-100 dark:border-slate-800">
-                        <a href="#" className="flex items-center justify-center gap-3 w-full p-4 border border-slate-200 dark:border-slate-800 rounded-2xl hover:bg-slate-50 dark:hover:bg-[#1A1F2B] transition-all font-bold text-[10px] uppercase tracking-widest text-slate-600 dark:text-slate-400">
-                            <img src="https://www.svgrepo.com/show/355037/google.svg" className="w-4 h-4" alt="Google" />
-                            Continuar con Google
-                        </a>
-                    </div>
+                    {/* FOOTER */}
+
+                    <p className="mt-8 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
+
+                        ¿No tienes cuenta?
+
+                        {' '}
+
+                        <Link
+                            to="/register"
+                            className="text-indigo-500 hover:text-indigo-600 transition-colors"
+                        >
+
+                            crea tu cuenta aquí
+
+                        </Link>
+
+                    </p>
+
                 </div>
 
-                {/* Footer del Login */}
-                <p className="mt-8 text-center text-[10px] font-bold text-slate-400 uppercase tracking-widest">
-                    ¿No tienes cuenta?{' '}
-                    <Link to={route('register')} className="text-indigo-500 hover:text-indigo-600 transition-colors">
-                        crea tu cuenta aquí
-                    </Link>
-                </p>
             </div>
+
         </div>
-    );
+    )
 }
