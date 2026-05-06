@@ -28,3 +28,15 @@ export const googleLoginRequest =
 
         return response.data
     }
+
+export const registerRequest =
+    async (data) => {
+
+        const response =
+            await api.post(
+                '/register/',
+                data
+            )
+
+        return response.data
+    }

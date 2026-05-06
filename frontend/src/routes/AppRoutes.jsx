@@ -14,6 +14,8 @@ import Login from '../modules/auth/pages/Login'
 
 import ProtectedRoute from '@/modules/auth/components/ProtectedRoute'
 
+import Register from '../modules/auth/pages/Register'
+
 export default function AppRoutes() {
 
     return (
@@ -25,6 +27,11 @@ export default function AppRoutes() {
             <Route
                 path="/login"
                 element={<Login />}
+            />
+
+            <Route
+                path="/register"
+                element={<Register />}
             />
 
             {/* PRIVADAS */}

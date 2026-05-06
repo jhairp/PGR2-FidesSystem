@@ -56,7 +56,6 @@ def google_login(token):
 
         usuario = Usuarios.objects.create(
             correo_usu=email,
-            username=email,
             estado_usu='activo',
             google_id=google_id,
             id_per_1=persona,

@@ -14,6 +14,14 @@ from .serializers import (
 
 from .services import google_login
 
+from rest_framework_simplejwt.tokens import (
+    RefreshToken
+)
+
+from .serializers import (
+    RegisterSerializer
+)
+
 
 class LoginView(TokenObtainPairView):
 
@@ -21,6 +29,38 @@ class LoginView(TokenObtainPairView):
         CustomTokenSerializer
     )
 
+class RegisterView(APIView):
+
+    permission_classes = []
+
+    authentication_classes = []
+
+    def post(self, request):
+
+        serializer = RegisterSerializer(
+                data=request.data
+            )
+
+        serializer.is_valid(
+            raise_exception=True
+        )
+
+        usuario = serializer.save()
+
+        refresh = RefreshToken.for_user(
+                usuario
+            )
+
+        return Response({
+
+            'refresh':
+                str(refresh),
+
+            'access':
+                str(refresh.access_token),
+
+        })
+    
 
 class GoogleLoginView(APIView):
 
