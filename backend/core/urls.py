@@ -43,4 +43,9 @@ urlpatterns = [
         'api/token/refresh/',
         TokenRefreshView.as_view()
     ),
+
+    path(
+        "api/bautizos/",
+        include("apps.sacramentos.bautizos.urls")
+    ),
 ]

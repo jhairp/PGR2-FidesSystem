@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Eventos, Centros, Comprobantes
+from ..apps.models import Eventos, Centros, Comprobantes
 
 class EventosSerializer(serializers.ModelSerializer):
     # Campos de solo lectura para mostrar información amigable en el calendario

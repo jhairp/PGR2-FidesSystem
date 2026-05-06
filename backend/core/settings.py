@@ -44,6 +44,9 @@ INSTALLED_APPS = [
 
     'apps.usuarios',
     'apps.authentication',
+
+    'apps.sacramentos.bautizos',
+    'apps',
 ]
 
 MIDDLEWARE = [

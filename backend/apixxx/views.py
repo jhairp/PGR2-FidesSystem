@@ -9,7 +9,7 @@ from django.utils.crypto import get_random_string # Para generar la clave tempor
 from rest_framework import status # Para status.HTTP_201_CREATED
 
 # USUARIOS
-from .models import Eventos, Usuarios, Personas, Rols, Centros, Parroquias
+from ..apps.models import Eventos, Usuarios, Personas, Rols, Centros, Parroquias
 from .PerUsu import UsuarioSerializer
 from .ParCen import CentrosSerializer, ParroquiasSerializer
 from .serializers import EventosSerializer
