@@ -16,6 +16,8 @@ import ProtectedRoute from '@/modules/auth/components/ProtectedRoute'
 
 import Register from '../modules/auth/pages/Register'
 
+import CompleteGoogleData from '../modules/auth/pages/CompleteGoogleData'
+
 export default function AppRoutes() {
 
     return (
@@ -32,6 +34,11 @@ export default function AppRoutes() {
             <Route
                 path="/register"
                 element={<Register />}
+            />
+
+            <Route
+                path="/complete-google-data"
+                element={<CompleteGoogleData />}
             />
 
             {/* PRIVADAS */}

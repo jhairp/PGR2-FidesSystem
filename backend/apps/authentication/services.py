@@ -11,6 +11,8 @@ from apps.usuarios.models import (
     PerRols,
 )
 
+from django.utils import timezone
+
 GOOGLE_CLIENT_ID = '292437594375-ccncjurgnbftk698h13nhu73jdii01p8.apps.googleusercontent.com'
 
 
@@ -41,6 +43,7 @@ def google_login(token):
     ).first()
 
     # SI NO EXISTE
+    needs_completion = False
 
     if not usuario:
 
@@ -50,6 +53,8 @@ def google_login(token):
             nom_per=nombre,
             ap_pat_per=apellido,
             id_per_rol_1=per_rol,
+            created_at=timezone.now(),
+            updated_at=timezone.now(),
         )
 
         rol = Rols.objects.first()
@@ -60,17 +65,50 @@ def google_login(token):
             google_id=google_id,
             id_per_1=persona,
             id_rol_1=rol,
+            created_at=timezone.now(),
+            updated_at=timezone.now(),
         )
 
         usuario.set_unusable_password()
 
         usuario.save()
 
+        needs_completion = True
+
     refresh = RefreshToken.for_user(usuario)
+
+    if (
+        not usuario.id_per_1.carnet_per
+        or
+        not usuario.id_per_1.cel_per
+    ):
+
+        needs_completion = True
 
     return {
 
         'refresh': str(refresh),
 
         'access': str(refresh.access_token),
+
+        'needs_completion': needs_completion,
     }
+
+
+def complete_google_data(
+    usuario,
+    carnet_per,
+    cel_per,
+):
+
+    persona = usuario.id_per_1
+
+    persona.carnet_per = carnet_per
+
+    persona.cel_per = cel_per
+
+    persona.updated_at = timezone.now()
+
+    persona.save()
+
+    return persona

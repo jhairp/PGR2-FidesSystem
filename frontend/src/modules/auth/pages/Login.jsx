@@ -68,6 +68,13 @@ export default function Login() {
                 token: response.access,
             })
 
+            if (response.needs_completion) {
+
+                navigate('/complete-google-data')
+
+                return
+            }
+
             navigate('/')
 
         } catch (error) {

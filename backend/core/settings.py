@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 
 from pathlib import Path
+from datetime import timedelta
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -82,7 +83,7 @@ WSGI_APPLICATION = 'core.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'PGR2SISPAR',      # El nombre de la base de datos de tu backup
+        'NAME': 'PGR2SISPAR2',      # El nombre de la base de datos de tu backup
         'USER': 'postgres',          # Tu usuario de PostgreSQL (por defecto es postgres)
         'PASSWORD': 'JHAIR12345', # Pon aquí la contraseña que usas en pgAdmin
         'HOST': '127.0.0.1',         # O 'localhost'
@@ -90,6 +91,17 @@ DATABASES = {
     }
 }
 
+
+SIMPLE_JWT = {
+
+    'USER_ID_FIELD': 'id_usu',
+
+    'USER_ID_CLAIM': 'user_id',
+
+    'ACCESS_TOKEN_LIFETIME': timedelta(hours=24),
+
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=7),
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/6.0/ref/settings/#auth-password-validators

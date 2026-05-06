@@ -12,7 +12,10 @@ from .serializers import (
     CustomTokenSerializer
 )
 
-from .services import google_login
+from .services import (
+    google_login,
+    complete_google_data,
+)
 
 from rest_framework_simplejwt.tokens import (
     RefreshToken
@@ -22,6 +25,7 @@ from .serializers import (
     RegisterSerializer
 )
 
+from rest_framework.permissions import IsAuthenticated
 
 class LoginView(TokenObtainPairView):
 
@@ -86,3 +90,29 @@ class GoogleLoginView(APIView):
         data = google_login(token)
 
         return Response(data)
+    
+class CompleteGoogleDataView(APIView):
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def post(self, request):
+
+        carnet_per = request.data.get(
+            'carnet_per'
+        )
+
+        cel_per = request.data.get(
+            'cel_per'
+        )
+
+        complete_google_data(
+            request.user,
+            carnet_per,
+            cel_per,
+        )
+
+        return Response({
+            'message': 'Datos completados'
+        })

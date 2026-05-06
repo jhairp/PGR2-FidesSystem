@@ -4,13 +4,6 @@ from rest_framework_simplejwt.serializers import (
     TokenObtainPairSerializer
 )
 
-
-class CustomTokenSerializer(
-    TokenObtainPairSerializer
-):
-
-    username_field = 'correo_usu'
-
 from rest_framework import serializers
 
 from apps.usuarios.models import (
@@ -20,6 +13,36 @@ from apps.usuarios.models import (
     PerRols,
 )
 
+class CustomTokenSerializer(
+    TokenObtainPairSerializer
+):
+
+    username_field = 'correo_usu'
+
+    @classmethod
+    def get_token(cls, user):
+
+        return super().get_token(user)
+
+    def validate(self, attrs):
+
+        data = super().validate(attrs)
+
+        needs_completion = False
+
+        if (
+            not self.user.id_per_1.carnet_per
+            or
+            not self.user.id_per_1.cel_per
+        ):
+
+            needs_completion = True
+
+        data['needs_completion'] = (
+            needs_completion
+        )
+
+        return data
 
 class RegisterSerializer(
     serializers.Serializer
@@ -71,7 +94,7 @@ class RegisterSerializer(
 
     def create(self, validated_data):
 
-        per_rol = PerRols.objects.first()
+        per_rol = PerRols.objects.get(id_per_rol=2)
 
         persona = Personas.objects.create(
 
@@ -97,7 +120,7 @@ class RegisterSerializer(
                 updated_at=timezone.now(),
             )
 
-        rol = Rols.objects.first()
+        rol = Rols.objects.get(id_rol=4)
 
         usuario = Usuarios.objects.create(
 
@@ -107,10 +130,7 @@ class RegisterSerializer(
 
                 estado_usu='activo',
 
-                foto_usu=validated_data.get(
-                    'foto_usu',
-                    'default.png'
-                ),
+                foto_usu='default.png',
 
                 id_per_1=persona,
 

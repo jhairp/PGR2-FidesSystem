@@ -4,6 +4,7 @@ from .views import (
     LoginView,
     GoogleLoginView,
     RegisterView,
+    CompleteGoogleDataView,
 )
 
 urlpatterns = [
@@ -21,5 +22,9 @@ urlpatterns = [
     path(
         'register/',
         RegisterView.as_view()
+    ),
+    path(
+        'auth/complete-google-data/',
+        CompleteGoogleDataView.as_view()
     ),
 ]
