@@ -84,6 +84,8 @@ export const AuthProvider = ({
 
                 user,
 
+                setUser,
+                
                 loading,
 
                 login,

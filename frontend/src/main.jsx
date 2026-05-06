@@ -8,6 +8,9 @@ import {
 import {
     AuthProvider,
 } from './modules/auth/context/AuthContext'
+import {
+    GoogleOAuthProvider,
+} from '@react-oauth/google'
 
 
 ReactDOM.createRoot(
@@ -15,16 +18,24 @@ ReactDOM.createRoot(
 ).render(
 
     <React.StrictMode>
+        
+        <GoogleOAuthProvider
+            clientId="292437594375-ccncjurgnbftk698h13nhu73jdii01p8.apps.googleusercontent.com"
+        >
 
-        <BrowserRouter>
+            <BrowserRouter>
 
-            <AuthProvider>
+                <AuthProvider>
 
-                <App />
+                    <App />
+                    
 
-            </AuthProvider>
+                </AuthProvider>
 
-        </BrowserRouter>
+            </BrowserRouter>
+
+        </GoogleOAuthProvider>
 
     </React.StrictMode>
+    
 )

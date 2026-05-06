@@ -1,6 +1,8 @@
 import api from '@/api/axios'
 
-export const loginRequest = async (data) => {
+export const loginRequest = async (
+    data
+) => {
 
     const response = await api.post(
         '/login/',
@@ -12,3 +14,17 @@ export const loginRequest = async (data) => {
 
     return response.data
 }
+
+export const googleLoginRequest =
+    async (token) => {
+
+        const response =
+            await api.post(
+                '/auth/google/',
+                {
+                    token,
+                }
+            )
+
+        return response.data
+    }

@@ -14,11 +14,22 @@ import {
 
 import { useAuth } from '../context/AuthContext'
 
+import {
+    GoogleLogin,
+} from '@react-oauth/google'
+
+import {
+    googleLoginRequest,
+} from '../services/authService'
+
 export default function Login() {
 
     const navigate = useNavigate()
 
-    const { login } = useAuth()
+    const {
+        login,
+        setUser,
+    } = useAuth()
 
     const [data, setData] = useState({
 
@@ -33,6 +44,42 @@ export default function Login() {
     const [errors, setErrors] =
         useState({})
 
+    const handleGoogleSuccess =
+    async (credentialResponse) => {
+
+        try {
+
+            const response =
+                await googleLoginRequest(
+                    credentialResponse.credential
+                )
+
+            localStorage.setItem(
+                'token',
+                response.access
+            )
+
+            localStorage.setItem(
+                'refresh',
+                response.refresh
+            )
+
+            setUser({
+                token: response.access,
+            })
+
+            navigate('/')
+
+        } catch (error) {
+
+            console.log(error)
+
+            setErrors({
+                general:
+                    'Error con Google Login'
+            })
+        }
+    }
     const handleSubmit = async (e) => {
 
         e.preventDefault()
@@ -222,6 +269,99 @@ export default function Login() {
                                 )}
 
                         </button>
+
+                        <div className="flex justify-center">
+
+    {/* BOTON CUSTOM */}
+
+    <div
+        onClick={() => {
+            document
+                .querySelector(
+                    '[role="button"]'
+                )
+                ?.click()
+        }}
+        className="
+            w-full
+            max-w-[320px]
+
+            mx-auto
+
+            flex
+            items-center
+            justify-center
+            gap-3
+
+            bg-white
+            border
+            border-slate-200
+
+            rounded-full
+
+            py-3
+            px-5
+
+            shadow-md
+            shadow-slate-200/50
+
+            hover:scale-[1.01]
+            hover:shadow-lg
+
+            transition-all
+            duration-300
+
+            cursor-pointer
+        "
+    >
+
+        <div className="
+            w-9
+            h-9
+            rounded-full
+            bg-white
+
+            flex
+            items-center
+            justify-center
+
+            border
+            border-slate-200
+        ">
+            <img
+                src="https://www.svgrepo.com/show/475656/google-color.svg"
+                alt="Google"
+                className="w-5 h-5"
+            />
+        </div>
+
+        <span className="
+            text-slate-700
+            font-semibold
+            tracking-wide
+            text-sm
+        ">
+            Continuar con Google
+        </span>
+
+    </div>
+
+    {/* GOOGLE REAL OCULTO */}
+
+    <div className="hidden">
+
+        <GoogleLogin
+            onSuccess={handleGoogleSuccess}
+            onError={() => {
+                console.log(
+                    'Google Login Error'
+                )
+            }}
+        />
+
+    </div>
+
+</div>
 
                     </form>
 
