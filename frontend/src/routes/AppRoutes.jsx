@@ -1,4 +1,8 @@
-import { Routes, Route } from 'react-router-dom'
+import {
+    Routes,
+    Route,
+    Navigate,
+} from 'react-router-dom'
 
 import MainLayout from '../components/layout/MainLayout'
 
@@ -8,32 +12,56 @@ import UsuariosIndex from '../modules/usuarios/pages/UsuariosIndex'
 
 import Login from '../modules/auth/pages/Login'
 
+import ProtectedRoute from '@/modules/auth/components/ProtectedRoute'
+
 export default function AppRoutes() {
 
     return (
 
         <Routes>
 
+            {/* LOGIN */}
+
             <Route
                 path="/login"
                 element={<Login />}
             />
-            
+
+            {/* PRIVADAS */}
+
             <Route
                 path="/"
                 element={
-                    <MainLayout>
-                        <Dashboard />
-                    </MainLayout>
+
+                    <ProtectedRoute>
+
+                        <MainLayout />
+
+                    </ProtectedRoute>
                 }
-            />
+            >
+
+                <Route
+                    index
+                    element={<Dashboard />}
+                />
+
+                <Route
+                    path="usuarios"
+                    element={<UsuariosIndex />}
+                />
+
+            </Route>
+
+            {/* REDIRECT */}
 
             <Route
-                path="/usuarios"
+                path="*"
                 element={
-                    <MainLayout>
-                        <UsuariosIndex />
-                    </MainLayout>
+                    <Navigate
+                        to="/"
+                        replace
+                    />
                 }
             />
 

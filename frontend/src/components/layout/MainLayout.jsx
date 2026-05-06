@@ -6,6 +6,10 @@ import Modal from '../UI/Modal';
 //import UserProfileContent from './Parts/UserProfileContent';
 import TopAlert from '@/Components/UI/TopAlert';
 
+import {
+    Outlet,
+} from 'react-router-dom'
+
 export default function MainLayout({ children }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const [isProfileOpen, setIsProfileOpen] = useState(false);
@@ -83,7 +87,7 @@ export default function MainLayout({ children }) {
                                     transition={{ duration: 0.3 }}
                                     className="p-6 md:p-10 lg:p-12 max-w-7xl mx-auto"
                                 >
-                                    {children}
+                                    <Outlet />
                                 </motion.div>
                             </AnimatePresence>
                         </main>

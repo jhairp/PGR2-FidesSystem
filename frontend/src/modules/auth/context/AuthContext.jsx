@@ -1,31 +1,36 @@
 import {
     createContext,
     useContext,
-    useState,
     useEffect,
+    useState,
 } from 'react'
 
-import { loginRequest } from '../services/authService'
+import {
+    loginRequest,
+} from '../services/authService'
 
-export const AuthContext = createContext()
+export const AuthContext =
+    createContext()
 
-export const AuthProvider = ({ children }) => {
+export const AuthProvider = ({
+    children,
+}) => {
 
-    const [user, setUser] = useState(null)
+    const [user, setUser] =
+        useState(null)
 
-    const [loading, setLoading] = useState(true)
+    const [loading, setLoading] =
+        useState(true)
 
     useEffect(() => {
 
-        const token = localStorage.getItem('token')
+        const token =
+            localStorage.getItem('token')
 
-        const refresh = localStorage.getItem('refresh')
-
-        if (token && refresh) {
+        if (token) {
 
             setUser({
                 token,
-                refresh,
             })
         }
 
@@ -33,48 +38,41 @@ export const AuthProvider = ({ children }) => {
 
     }, [])
 
+    // LOGIN
+
     const login = async (
         correo_usu,
         password
     ) => {
 
-        try {
-
-            const response = await loginRequest({
+        const response =
+            await loginRequest({
                 correo_usu,
                 password,
             })
 
-            localStorage.setItem(
-                'token',
-                response.access
-            )
+        localStorage.setItem(
+            'token',
+            response.access
+        )
 
-            localStorage.setItem(
-                'refresh',
-                response.refresh
-            )
+        localStorage.setItem(
+            'refresh',
+            response.refresh
+        )
 
-            setUser({
-                token: response.access,
-                refresh: response.refresh,
-            })
+        setUser({
+            token: response.access,
+        })
 
-            return response
-
-        } catch (error) {
-
-            console.error(error)
-
-            throw error
-        }
+        return response
     }
+
+    // LOGOUT
 
     const logout = () => {
 
-        localStorage.removeItem('token')
-
-        localStorage.removeItem('refresh')
+        localStorage.clear()
 
         setUser(null)
     }
@@ -83,11 +81,14 @@ export const AuthProvider = ({ children }) => {
 
         <AuthContext.Provider
             value={{
+
                 user,
-                login,
-                logout,
+
                 loading,
-                isAuthenticated: !!user,
+
+                login,
+
+                logout,
             }}
         >
 
@@ -97,7 +98,5 @@ export const AuthProvider = ({ children }) => {
     )
 }
 
-export const useAuth = () => {
-
-    return useContext(AuthContext)
-}
+export const useAuth = () =>
+    useContext(AuthContext)
