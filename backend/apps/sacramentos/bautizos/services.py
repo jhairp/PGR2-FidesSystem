@@ -8,6 +8,8 @@ from .models import (
     Centros
 )
 
+from django.shortcuts import get_object_or_404
+
 from apps.usuarios.models import Personas
 
 
@@ -106,5 +108,19 @@ def crear_bautizo(validated_data, usuario):
 
         id_per_2_id=validated_data["sacerdote_certificador"]
     )
+
+    return sacramento
+
+def cambiar_estado_bautizo(id_sac, estado):
+
+    sacramento = get_object_or_404(
+        Sacramentos,
+        id_sac=id_sac,
+        tipo_sac="BAUTIZO"
+    )
+
+    sacramento.estado_sac = estado
+
+    sacramento.save()
 
     return sacramento

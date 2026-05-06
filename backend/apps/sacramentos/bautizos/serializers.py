@@ -150,3 +150,12 @@ class BautizoCreateSerializer(serializers.Serializer):
         )
 
         return data
+
+class BautizoEstadoSerializer(serializers.Serializer):
+
+    estado_sac = serializers.ChoiceField(
+        choices=[
+            "ACTIVO",
+            "INACTIVO"
+        ]
+    )
