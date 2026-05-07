@@ -159,3 +159,17 @@ class BautizoEstadoSerializer(serializers.Serializer):
             "INACTIVO"
         ]
     )
+
+class BautizoListSerializer(serializers.Serializer):
+
+    id_sac = serializers.IntegerField()
+
+    bautizado = serializers.CharField()
+
+    fecha_sac = serializers.DateField()
+
+    centro = serializers.CharField()
+
+    libro = serializers.CharField()
+
+    estado_sac = serializers.CharField()

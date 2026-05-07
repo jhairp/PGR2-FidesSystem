@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
-import Sidebar from './Parts/Sidebar';
-import Navbar from './Parts/Navbar';
+import Sidebar from './parts/Sidebar';
+import Navbar from './parts/Navbar';
 import Modal from '../UI/Modal';
 //import UserProfileContent from './Parts/UserProfileContent';
 import TopAlert from '@/Components/UI/TopAlert';

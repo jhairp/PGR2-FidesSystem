@@ -3,7 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from .serializers import BautizoCreateSerializer, BautizoEstadoSerializer
-from .services import cambiar_estado_bautizo, crear_bautizo
+from .services import cambiar_estado_bautizo, crear_bautizo, editar_bautizo, listar_bautizos, obtener_bautizo
 
 from apps.models import Usuarios
 
@@ -59,3 +59,43 @@ class BautizoEstadoView(APIView):
             },
             status=status.HTTP_200_OK
         )
+    
+class BautizoUpdateView(APIView):
+
+    permission_classes = []
+
+    def put(self, request, id_sac):
+
+        serializer = BautizoCreateSerializer(
+            data=request.data
+        )
+
+        serializer.is_valid(raise_exception=True)
+
+        bautizo = editar_bautizo(
+            id_sac,
+            serializer.validated_data
+        )
+
+        return Response(
+            {
+                "message": "Bautizo actualizado correctamente",
+                "id_sac": bautizo.id_sac
+            },
+            status=status.HTTP_200_OK
+        )
+    
+class BautizoListView(APIView):
+
+    permission_classes = []
+
+    def get(self, request):
+
+        bautizos = listar_bautizos()
+
+        return Response(
+            bautizos,
+            status=status.HTTP_200_OK
+        )
+    
+    

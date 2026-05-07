@@ -1,19 +1,52 @@
 from django.urls import path
 
-from .views import BautizoCreateView, BautizoEstadoView
+from .views import (
+    BautizoListView,
+    BautizoCreateView,
+    BautizoUpdateView,
+    BautizoEstadoView
+)
 
 urlpatterns = [
 
-    path(
-        "",
-        BautizoCreateView.as_view(),
-        name="crear_bautizo"
-    ),
+    # =========================
+    # LISTAR
+    # =========================
 
     path(
-        "<int:id_sac>/estado/",
+        '',
+        BautizoListView.as_view(),
+        name='listar_bautizos'
+    ),
+
+    # =========================
+    # CREAR
+    # =========================
+
+    path(
+        'crear/',
+        BautizoCreateView.as_view(),
+        name='crear_bautizo'
+    ),
+
+    # =========================
+    # EDITAR
+    # =========================
+
+    path(
+        '<int:id_sac>/',
+        BautizoUpdateView.as_view(),
+        name='editar_bautizo'
+    ),
+
+    # =========================
+    # ESTADO
+    # =========================
+
+    path(
+        '<int:id_sac>/estado/',
         BautizoEstadoView.as_view(),
-        name="cambiar_estado_bautizo"
+        name='cambiar_estado_bautizo'
     ),
 
 ]
