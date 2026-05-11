@@ -59,9 +59,10 @@ export default function Register() {
             localStorage.setItem('token', response.access)
             localStorage.setItem('refresh', response.refresh)
 
-            setUser({
-                token: response.access,
-            })
+            const userData =
+                await meRequest()
+
+            setUser(userData)
 
             navigate('/')
 
@@ -97,9 +98,10 @@ export default function Register() {
             localStorage.setItem('token', response.access)
             localStorage.setItem('refresh', response.refresh)
 
-            setUser({
-                token: response.access,
-            })
+            const userData =
+                await meRequest()
+
+            setUser(userData)
 
             if (response.needs_completion) {
 

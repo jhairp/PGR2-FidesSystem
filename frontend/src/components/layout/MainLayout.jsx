@@ -9,6 +9,8 @@ import TopAlert from '@/Components/UI/TopAlert';
 import {
     Outlet,
 } from 'react-router-dom'
+import UserProfileContent from './parts/UserProfileContent'
+import { useAuth } from '@/modules/auth/hooks/useAuth'
 
 export default function MainLayout({ children }) {
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
@@ -31,26 +33,26 @@ export default function MainLayout({ children }) {
         window.triggerAlert = triggerAlert;
     }, []);
 
-    // PERSISTENCIA DEL MODO OSCURO
-    // Este efecto asegura que al navegar o recargar, el layout respete el tema guardado
-    //const { auth } = usePage().props;
-    const auth = {
-        user: {
-            persona: {
-                nom_per: 'Jhahir',
-            },
-            correo_usu: 'jhahir@gmail.com',
-            tema_usu: 'light',
-        },
-    };
+    const { user } = useAuth()
+
+    const [showProfile,
+    setShowProfile] =
+    useState(false)
 
     useEffect(() => {
-        if (auth?.user?.tema_usu === 'dark') {
-            document.documentElement.classList.add('dark');
+
+        if (user?.tema_usu === 'dark') {
+
+            document.documentElement
+                .classList.add('dark')
+
         } else {
-            document.documentElement.classList.remove('dark');
+
+            document.documentElement
+                .classList.remove('dark')
         }
-    }, [auth?.user?.tema_usu]);
+
+    }, [user?.tema_usu])
 
     return (
         <>
@@ -72,7 +74,6 @@ export default function MainLayout({ children }) {
                         {/* NAVBAR */}
                         <Navbar 
                             onOpenMenu={() => setIsMobileMenuOpen(true)} 
-                            userName={auth?.user?.miembro?.nom_mie || auth?.user?.name || 'Usuario'} 
                             onOpenProfile={() => setIsProfileOpen(true)}
                         />
 
@@ -100,9 +101,7 @@ export default function MainLayout({ children }) {
                         title="Configuración de Perfil"
                     >
                         {/* <UserProfileContent auth={auth} /> */}
-                        <div className="p-6 text-white">
-                            Perfil
-                        </div>
+                        <UserProfileContent />
                     </Modal>
 
                     {/* OVERLAY PARA MÓVIL (SIDEBAR) */}

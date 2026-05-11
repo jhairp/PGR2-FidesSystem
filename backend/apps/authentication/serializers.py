@@ -13,6 +13,10 @@ from apps.usuarios.models import (
     PerRols,
 )
 
+from rest_framework import serializers
+
+from apps.usuarios.models import Usuarios
+
 class CustomTokenSerializer(
     TokenObtainPairSerializer
 ):
@@ -147,3 +151,30 @@ class RegisterSerializer(
         usuario.save()
 
         return usuario
+    
+class MeSerializer(
+    serializers.ModelSerializer
+):
+
+    persona = serializers.SerializerMethodField()
+
+    class Meta:
+
+        model = Usuarios
+
+        fields = [
+            'id_usu',
+            'correo_usu',
+            'foto_usu',
+            'persona',
+        ]
+
+    def get_persona(self, obj):
+
+        return {
+
+            'nom_per': obj.id_per_1.nom_per,
+
+            'ap_pat_per':
+                obj.id_per_1.ap_pat_per,
+        }

@@ -40,3 +40,20 @@ export const registerRequest =
 
         return response.data
     }
+
+export const meRequest =
+    async () => {
+
+        const response =
+            await api.get(
+                '/auth/me/',
+                {
+                    headers: {
+                        Authorization:
+                            `Bearer ${localStorage.getItem('token')}`
+                    }
+                }
+            )
+
+        return response.data
+    }

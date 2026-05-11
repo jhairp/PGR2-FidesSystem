@@ -7,6 +7,7 @@ import {
 
 import {
     loginRequest,
+    meRequest
 } from '../services/authService'
 
 export const AuthContext =
@@ -24,20 +25,42 @@ export const AuthProvider = ({
 
     useEffect(() => {
 
-        const token =
-            localStorage.getItem('token')
+    const loadUser = async () => {
 
-        if (token) {
+        try {
 
-            setUser({
-                token,
-            })
+            const token =
+                localStorage.getItem('token')
+
+            if (!token) {
+
+                setLoading(false)
+
+                return
+            }
+
+            const userData =
+                await meRequest()
+
+            setUser(userData)
+
+        } catch (error) {
+
+            console.log(error)
+
+            localStorage.clear()
+
+            setUser(null)
+
+        } finally {
+
+            setLoading(false)
         }
+    }
 
-        setLoading(false)
+    loadUser()
 
-    }, [])
-
+}, [])
     // LOGIN
 
     const login = async (
@@ -61,9 +84,12 @@ export const AuthProvider = ({
             response.refresh
         )
 
-        setUser({
-            token: response.access,
-        })
+        // 👇 CARGAR USUARIO REAL
+
+        const userData =
+            await meRequest()
+
+        setUser(userData)
 
         return response
     }

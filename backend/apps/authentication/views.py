@@ -27,6 +27,8 @@ from .serializers import (
 
 from rest_framework.permissions import IsAuthenticated
 
+from .serializers import MeSerializer
+
 class LoginView(TokenObtainPairView):
 
     serializer_class = (
@@ -116,3 +118,55 @@ class CompleteGoogleDataView(APIView):
         return Response({
             'message': 'Datos completados'
         })
+
+class MeView(APIView):
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def get(self, request):
+
+        serializer = MeSerializer(
+            request.user
+        )
+
+        return Response(
+            serializer.data
+        )
+    
+class UpdateProfileView(APIView):
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def post(self, request):
+
+        usuario = request.user
+
+        persona = usuario.id_per_1
+
+        persona.nom_per = request.data.get(
+            'nom_per'
+        )
+
+        persona.ap_pat_per = request.data.get(
+            'ap_pat_per'
+        )
+
+        persona.save()
+
+        usuario.foto_usu = request.data.get(
+            'foto_usu'
+        )
+
+        usuario.save()
+
+        serializer = MeSerializer(
+            usuario
+        )
+
+        return Response(
+            serializer.data
+        )

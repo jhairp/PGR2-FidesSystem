@@ -20,6 +20,7 @@ import {
 
 import {
     googleLoginRequest,
+    meRequest,
 } from '../services/authService'
 
 export default function Login() {
@@ -64,9 +65,10 @@ export default function Login() {
                 response.refresh
             )
 
-            setUser({
-                token: response.access,
-            })
+            const userData =
+                await meRequest()
+
+            setUser(userData)
 
             if (response.needs_completion) {
 
