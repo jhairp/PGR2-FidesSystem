@@ -9,6 +9,7 @@ import {
     Shield,
     Users,
     LogOut,
+    BookOpen,
 } from 'lucide-react'
 
 import {
@@ -164,6 +165,7 @@ export default function Sidebar({
                         </span>
 
                     </div>
+                    {/* NAV 
 
                     <NavItem
                         href="/roles"
@@ -180,6 +182,7 @@ export default function Sidebar({
                         active={url.startsWith('/per-roles')}
                         onClick={onClose}
                     />
+                    */}
 
                     <NavItem
                         href="/usuarios"
@@ -189,6 +192,7 @@ export default function Sidebar({
                         onClick={onClose}
                     />
 
+                    {/* NAV 
                     <NavItem
                         href="/parroquias"
                         icon={<Home size={20} />}
@@ -202,6 +206,15 @@ export default function Sidebar({
                         icon={<MapPin size={20} />}
                         label="Centros"
                         active={url.startsWith('/centros')}
+                        onClick={onClose}
+                    />
+                    */}
+                    
+                    <NavItem
+                        href="/bautizos"
+                        icon={<BookOpen size={20} />}
+                        label="Bautizos"
+                        active={url.startsWith('/bautizos')}
                         onClick={onClose}
                     />
 

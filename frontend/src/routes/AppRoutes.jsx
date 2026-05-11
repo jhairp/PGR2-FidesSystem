@@ -18,6 +18,8 @@ import Register from '../modules/auth/pages/Register'
 
 import CompleteGoogleData from '../modules/auth/pages/CompleteGoogleData'
 
+import BautizosIndex from '../modules/bautizos/pages/BautizosIndex'
+
 export default function AppRoutes() {
 
     return (
@@ -63,6 +65,11 @@ export default function AppRoutes() {
                 <Route
                     path="usuarios"
                     element={<UsuariosIndex />}
+                />
+
+                <Route
+                    path="/bautizos"
+                    element={<BautizosIndex />}
                 />
 
             </Route>

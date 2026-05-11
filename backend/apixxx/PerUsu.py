@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Personas, Usuarios, Rols
+from ..apps.models import Personas, Usuarios, Rols
 
 # Serializador para los datos de la Persona
 class PersonaSerializer(serializers.ModelSerializer):

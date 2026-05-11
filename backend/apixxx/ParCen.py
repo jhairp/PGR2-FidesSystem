@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Centros, Parroquias
+from ..apps.models import Centros, Parroquias
 
 class ParroquiasSerializer(serializers.ModelSerializer):
     class Meta:
