@@ -48,4 +48,9 @@ urlpatterns = [
         "api/bautizos/",
         include("apps.sacramentos.bautizos.urls")
     ),
+    
+    path(
+        "api/centros/",
+        include("apps.centros.urls")
+    ),
 ]
