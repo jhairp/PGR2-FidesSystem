@@ -298,7 +298,7 @@ class Usuarios(
 
     class Meta:
 
-        managed = False
+        #managed = False
 
         db_table = 'usuarios'
         
