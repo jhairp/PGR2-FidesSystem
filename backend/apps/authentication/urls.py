@@ -7,6 +7,7 @@ from .views import (
     CompleteGoogleDataView,
     MeView,
     UpdateProfileView,
+    UpdateThemeView
 )
 
 urlpatterns = [
@@ -36,5 +37,9 @@ urlpatterns = [
     path(
         'auth/profile/update/',
         UpdateProfileView.as_view()
+    ),
+    path(
+        'auth/theme/update/',
+        UpdateThemeView.as_view()
     ),
 ]

@@ -170,3 +170,29 @@ class UpdateProfileView(APIView):
         return Response(
             serializer.data
         )
+    
+class UpdateThemeView(APIView):
+
+    permission_classes = [
+        IsAuthenticated
+    ]
+
+    def post(self, request):
+
+        tema = request.data.get(
+            'tema_usu'
+        )
+
+        usuario = request.user
+
+        usuario.tema_usu = tema
+
+        usuario.save()
+
+        serializer = MeSerializer(
+            usuario
+        )
+
+        return Response(
+            serializer.data
+        )

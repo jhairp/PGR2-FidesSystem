@@ -12,6 +12,8 @@ from '@/modules/auth/hooks/useAuth'
 
 import api from '@/api/axios'
 
+import DarkModeToggle from '@/components/ui/DarkModeToggle'
+
 export default function UserProfileContent() {
 
     const {
@@ -52,6 +54,8 @@ export default function UserProfileContent() {
 
         foto_usu: 'default.png',
     })
+
+    const isDark = user?.tema_usu === 'dark'
 
     useEffect(() => {
 
@@ -131,6 +135,54 @@ export default function UserProfileContent() {
         } finally {
 
             setProcessing(false)
+        }
+    }
+
+    const toggleTheme = async () => {
+
+        try {
+
+            const newTheme =
+
+                isDark
+                    ? 'light'
+                    : 'dark'
+
+            // CAMBIO VISUAL INMEDIATO
+
+            if (newTheme === 'dark') {
+
+                document.documentElement
+                    .classList.add('dark')
+
+            } else {
+
+                document.documentElement
+                    .classList.remove('dark')
+            }
+
+            const response =
+                await api.post(
+                    '/auth/theme/update/',
+                    {
+                        tema_usu:
+                            newTheme,
+                    },
+                    {
+                        headers: {
+                            Authorization:
+                                `Bearer ${localStorage.getItem('token')}`
+                        }
+                    }
+                )
+
+            setUser(
+                response.data
+            )
+
+        } catch (error) {
+
+            console.log(error)
         }
     }
 
@@ -414,11 +466,45 @@ export default function UserProfileContent() {
                                 </button>
 
                             </div>
+                            
                         )
                 }
 
             </div>
+            
+<button
+    onClick={toggleTheme}
 
-        </div>
+    className="w-full mt-3 flex items-center justify-between p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-700 hover:scale-[1.01] transition-all"
+>
+
+    <div className="text-left">
+
+        <p className="text-xs font-black dark:text-white uppercase tracking-wider">
+
+            Tema Visual
+
+        </p>
+
+        <p className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">
+
+            {
+                isDark
+                    ? 'Modo Oscuro'
+                    : 'Modo Claro'
+            }
+
+        </p>
+
+    </div>
+
+    <DarkModeToggle
+        isDark={isDark}
+    />
+
+</button>
+
+</div>
+
     )
 }
