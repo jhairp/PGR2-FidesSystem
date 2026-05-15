@@ -19,8 +19,7 @@ import {
 
 import NavItem from './NavItem'
 
-import { useAuth }
-from '@/modules/auth/hooks/useAuth'
+import { useAuth } from '@/modules/auth/hooks/useAuth'
 
 export default function Sidebar({
     isOpen,
@@ -45,6 +44,14 @@ export default function Sidebar({
 
         navigate('/login')
     }
+    
+    const { user } = useAuth()
+
+    const isAdmin =
+
+        [1,2,3].includes(
+            user?.id_rol_1
+        )
 
     return (
 
@@ -184,13 +191,19 @@ export default function Sidebar({
                     />
                     */}
 
-                    <NavItem
-                        href="/usuarios"
-                        icon={<Users size={20} />}
-                        label="Usuarios"
-                        active={url.startsWith('/usuarios')}
-                        onClick={onClose}
-                    />
+                    {
+                        isAdmin && (
+
+                            <NavItem
+                                href="/usuarios"
+                                icon={<Users size={20} />}
+                                label="Usuarios"
+                                active={url.startsWith('/usuarios')}
+                                onClick={onClose}
+                            />
+
+                        )
+                    }
 
                     {/* NAV 
                     <NavItem
@@ -210,13 +223,19 @@ export default function Sidebar({
                     />
                     */}
                     
-                    <NavItem
-                        href="/bautizos"
-                        icon={<BookOpen size={20} />}
-                        label="Bautizos"
-                        active={url.startsWith('/bautizos')}
-                        onClick={onClose}
-                    />
+                    {
+                        isAdmin && (
+
+                            <NavItem
+                                href="/bautizos"
+                                icon={<BookOpen size={20} />}
+                                label="Bautizos"
+                                active={url.startsWith('/bautizos')}
+                                onClick={onClose}
+                            />
+
+                        )
+                    }
 
                 </nav>
 

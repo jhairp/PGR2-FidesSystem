@@ -167,6 +167,7 @@ class MeSerializer(
             'correo_usu',
             'foto_usu',
             'tema_usu',
+            'id_rol_1',
             'persona',
         ]
 
