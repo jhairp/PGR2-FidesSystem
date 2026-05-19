@@ -6,7 +6,6 @@ import useCentros from "../hooks/useCentros";
 
 import CentroTable from "../components/CentroTable";
 import CentroModal from "../components/AsignarPersonalModal";
-import CentroViewCard from "../components/CentroViewCard";
 
 import TableControls
 from "../../../components/ui/TableControls";
@@ -22,6 +21,9 @@ from "../../../components/ui/PageHeader";
 
 import AsignarPersonalModal
 from "../components/AsignarPersonalModal";
+
+import HorariosModal
+from "../components/HorariosModal";
 
 import {
     CreateButton,
@@ -61,6 +63,36 @@ export default function CentrosIndex() {
                 null
             );
         };
+    const [
+        showHorarioModal,
+        setShowHorarioModal
+    ] = useState(false);
+
+    const [
+        selectedCentroHorario,
+        setSelectedCentroHorario
+    ] = useState(null);
+
+    const handleOpenHorarios =
+        (centro) => {
+
+            setSelectedCentroHorario(
+                centro
+            );
+
+            setShowHorarioModal(true);
+        };
+
+    const handleCloseHorarios =
+        () => {
+
+            setShowHorarioModal(false);
+
+            setSelectedCentroHorario(
+                null
+            );
+        };
+        
     const {
 
         filteredCentros,
@@ -146,11 +178,7 @@ export default function CentrosIndex() {
 
                 onAssign={handleOpenAssign}
 
-                onSchedule={(centro) =>
-                    navigate(
-                        `/centros/${centro.id_cen}/horarios`
-                    )
-                }
+                onSchedule={handleOpenHorarios}
             />
 
             <AsignarPersonalModal
@@ -162,16 +190,14 @@ export default function CentrosIndex() {
                 centro={selectedCentroAssign}
             />
 
-            <CentroModal
-                show={showModal}
-                onClose={cerrarModal}
-            >
+            <HorariosModal
 
-                <CentroViewCard
-                    centro={selectedCentro}
-                />
+                show={showHorarioModal}
 
-            </CentroModal>
+                onClose={handleCloseHorarios}
+
+                centro={selectedCentroHorario}
+            />
 
         </div>
     );

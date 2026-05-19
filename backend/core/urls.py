@@ -64,4 +64,9 @@ urlpatterns = [
         "api/personas/",
         include("apps.personas.urls")
     ),
+
+    path(
+        'api/',
+        include('apps.horarios.urls')
+    ),
 ]

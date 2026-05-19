@@ -14,7 +14,6 @@ export default function CentroTable({
     onEdit,
     onAssign,
     onSchedule
-
 }) {
 
     const navigate = useNavigate();
@@ -285,12 +284,7 @@ export default function CentroTable({
 
                                             onAssign={onAssign}
 
-                                            onSchedule={(item) =>
-                                                console.log(
-                                                    "Horarios",
-                                                    item
-                                                )
-                                            }
+                                            onSchedule={onSchedule}
                                         />
                                     </div>
 

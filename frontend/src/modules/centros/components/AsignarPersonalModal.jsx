@@ -478,21 +478,25 @@ export default function AsignarPersonalModal({
                                                     ? (
                                                         <>
                                                             <UserMinus
-                                                                size={15}
-                                                                strokeWidth={3}
+                                                                size={16}
+                                                                strokeWidth={2.5}
                                                             />
 
-                                                            Quitar
+                                                            <span className="hidden sm:inline">
+                                                                Quitar
+                                                            </span>
                                                         </>
                                                     )
                                                     : (
                                                         <>
                                                             <UserPlus
-                                                                size={15}
-                                                                strokeWidth={3}
+                                                                size={16}
+                                                                strokeWidth={2.5}
                                                             />
 
-                                                            Asignar
+                                                            <span className="hidden sm:inline">
+                                                                Asignar
+                                                            </span>
                                                         </>
                                                     )
                                             }
