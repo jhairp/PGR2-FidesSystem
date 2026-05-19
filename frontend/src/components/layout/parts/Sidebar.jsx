@@ -214,15 +214,22 @@ export default function Sidebar({
                         onClick={onClose}
                     />
 
-                    <NavItem
-                        href="/centros"
-                        icon={<MapPin size={20} />}
-                        label="Centros"
-                        active={url.startsWith('/centros')}
-                        onClick={onClose}
-                    />
                     */}
-                    
+
+                    {
+                        isAdmin && (
+
+                            <NavItem
+                                href="/centros"
+                                icon={<MapPin size={20} />}
+                                label="Centros"
+                                active={url.startsWith('/centros')}
+                                onClick={onClose}
+                            />
+
+                        )
+                    }
+
                     {
                         isAdmin && (
 

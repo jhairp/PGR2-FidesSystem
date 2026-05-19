@@ -50,7 +50,18 @@ urlpatterns = [
     ),
     
     path(
-        "api/centros/",
+        "api/",
         include("apps.centros.urls")
+    ),
+
+    path(
+        'api/det-pars/',
+        include(
+            'apps.det_pars.urls')
+    ),
+
+    path(
+        "api/personas/",
+        include("apps.personas.urls")
     ),
 ]

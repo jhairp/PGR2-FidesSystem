@@ -31,8 +31,15 @@ export default function Badge({ status, onClick }) {
             type="button"
             onClick={onClick}
             // Animación de botón físico (se hunde y gira un poco)
-            whileTap={{ scale: 0.85, rotate: -1 }} 
-            whileHover={{ y: -1 }}
+            whileTap={{
+                scale: 0.78,
+                rotate: -2
+            }}
+
+            whileHover={{
+                y: -2,
+                scale: 1.03
+            }}
             className={`
                 relative px-6 py-2 rounded-full text-[10px] font-black uppercase tracking-[0.2em] border 
                 transition-all duration-300 cursor-pointer overflow-hidden shadow-sm

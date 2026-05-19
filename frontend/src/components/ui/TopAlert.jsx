@@ -56,10 +56,10 @@ export default function TopAlert({ show, type = 'creado', message }) {
         <AnimatePresence>
             {show && (
                 <motion.div
-                    initial={{ y: -100, x: '-50%', opacity: 0 }}
-                    animate={{ y: 0, x: '-50%', opacity: 1 }}
+                    initial={{ y: -120, x: '-50%', opacity: 0, scale: 0.8 }}
+                    animate={{ y: 0, x: '-50%', opacity: 1, scale: 1 }}
                     exit={{ y: -100, x: '-50%', opacity: 0 }}
-                    transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                    transition={{ type: 'spring', stiffness: 180, damping: 18 }}
                     className="fixed top-10 left-1/2 z-[9999] pointer-events-none"
                 >
                     <div

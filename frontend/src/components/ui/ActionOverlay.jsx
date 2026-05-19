@@ -71,8 +71,8 @@ export default function ActionOverlay({ isVisible, type = 'creado' }) {
           <motion.div
             initial={{ scale: 0.2, opacity: 0, rotate: -20 }}
             animate={{ scale: 1, opacity: 1, rotate: 0 }}
-            exit={{ scale: 2, opacity: 0 }}
-            transition={{ type: "spring", damping: 15, stiffness: 200 }}
+            exit={{ scale: 3, opacity: 0, filter: "blur(12px)" }}
+            transition={{ type: "spring", damping: 10, stiffness: 120 }}
             className={`rounded-full p-10 ${current.glow} bg-white/10 dark:bg-black/20`}
           >
             {current.icon}

@@ -7,6 +7,8 @@ from .models import Centro
 from .serializers import CentroSerializer
 from .services import CentroService
 
+from .models import Parroquia
+from .serializers import ParroquiaSerializer
 
 class CentroViewSet(ModelViewSet):
 
@@ -58,30 +60,47 @@ class CentroViewSet(ModelViewSet):
             ).data
         )
 
-    def destroy(self, request, pk=None):
-
-        centro = CentroService.obtener_centro(pk)
-
-        CentroService.eliminar_centro(centro)
-
-        return Response(status=204)
-
     @action(
         detail=True,
         methods=["patch"],
         url_path="cambiar-estado"
     )
-    def cambiar_estado(self, request, pk=None):
+    def cambiar_estado(
+        self,
+        request,
+        pk=None
+    ):
 
-        centro = CentroService.obtener_centro(pk)
+        centro = self.get_object()
 
-        estado = request.data.get("estado_cen")
-
-        centro = CentroService.cambiar_estado(
-            centro,
-            estado
+        nuevo_estado = request.data.get(
+            "estado_cen"
         )
 
-        return Response(
-            self.serializer_class(centro).data
-        )
+        if not nuevo_estado:
+
+            nuevo_estado = (
+                "inactivo"
+                if centro.estado_cen == "activo"
+                else "activo"
+            )
+
+        centro.estado_cen = nuevo_estado
+
+        centro.save()
+
+        return Response({
+
+            "message":
+                "Estado actualizado",
+
+            "estado_cen":
+                centro.estado_cen
+
+        })
+    
+class ParroquiaViewSet(ModelViewSet):
+
+    queryset = Parroquia.objects.all()
+
+    serializer_class = ParroquiaSerializer

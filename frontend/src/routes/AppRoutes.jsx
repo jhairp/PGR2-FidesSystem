@@ -20,6 +20,12 @@ import CompleteGoogleData from '../modules/auth/pages/CompleteGoogleData'
 
 import BautizosIndex from '../modules/bautizos/pages/BautizosIndex'
 
+import CentrosIndex from "../modules/centros/pages/CentrosIndex";
+
+import CentroCreate from "../modules/centros/pages/CentroCreate";
+
+import CentroEdit from "../modules/centros/pages/CentroEdit";
+
 export default function AppRoutes() {
 
     return (
@@ -71,6 +77,12 @@ export default function AppRoutes() {
                     path="/bautizos"
                     element={<BautizosIndex />}
                 />
+
+                <Route path="/centros" element={<CentrosIndex />} />
+
+                <Route path="/centros/create" element={<CentroCreate />} />
+
+                <Route path="/centros/edit/:id" element={<CentroEdit />} />
 
             </Route>
 

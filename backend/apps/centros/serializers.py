@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from .models import Centro
+from .models import Centro, Parroquia
 
 
 class CentroSerializer(serializers.ModelSerializer):
@@ -13,4 +13,10 @@ class CentroSerializer(serializers.ModelSerializer):
     class Meta:
         model = Centro
 
+        fields = "__all__"
+
+class ParroquiaSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Parroquia
         fields = "__all__"

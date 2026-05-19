@@ -1,12 +1,17 @@
 // resources/js/Components/UI/TableActions.jsx
 import React from 'react';
-import { Edit3, Trash2, Eye } from 'lucide-react'; // Importamos Eye
+import { Edit3, Trash2, Eye, Users, Clock3 } from 'lucide-react'; // Importamos Eye
 
-export default function TableActions({ item, onEdit, onDelete, onView }) {
-    const id = item.id_rol || item.id_parroquia || item.id_usu || item.id;
+export default function TableActions({ item, onEdit, onDelete, onView, onAssign, onSchedule, }) {
+    const id =
+    item.id_cen ||
+    item.id_rol ||
+    item.id_parroquia ||
+    item.id_usu ||
+    item.id;
 
     // Si hay onDelete o onView, ajustamos la justificación
-    const justify = (onDelete || onView) ? 'justify-end' : 'justify-center';
+    const justify = (onDelete || onAssign || onSchedule|| onView) ? 'justify-end' : 'justify-center';
 
     return (
         <div className={`flex items-center gap-3 ${justify}`}>
@@ -81,6 +86,74 @@ export default function TableActions({ item, onEdit, onDelete, onView }) {
                     title="Eliminar"
                 >
                     <Trash2 size={16} strokeWidth={2.5} />
+                </button>
+            )}
+
+            {/* --- BOTÓN ASIGNAR PERSONAL --- */}
+            {onAssign && (
+
+                <button
+
+                    onClick={() =>
+                        onAssign(item)
+                    }
+
+                    className="
+                        p-2.5
+                        bg-blue-50
+                        text-blue-600
+                        hover:bg-blue-600
+                        hover:text-white
+                        rounded-xl
+                        transition-all
+                        duration-200
+                        active:scale-95
+                        dark:bg-blue-400/10
+                        dark:text-blue-400
+                    "
+
+                    title="Asignar Personal"
+                >
+
+                    <Users
+                        size={16}
+                        strokeWidth={2.5}
+                    />
+
+                </button>
+            )}
+
+            {/* --- BOTÓN HORARIOS --- */}
+            {onSchedule && (
+
+                <button
+
+                    onClick={() =>
+                        onSchedule(item)
+                    }
+
+                    className="
+                        p-2.5
+                        bg-emerald-50
+                        text-emerald-600
+                        hover:bg-emerald-600
+                        hover:text-white
+                        rounded-xl
+                        transition-all
+                        duration-200
+                        active:scale-95
+                        dark:bg-emerald-400/10
+                        dark:text-emerald-400
+                    "
+
+                    title="Gestionar Horarios"
+                >
+
+                    <Clock3
+                        size={16}
+                        strokeWidth={2.5}
+                    />
+
                 </button>
             )}
         </div>
