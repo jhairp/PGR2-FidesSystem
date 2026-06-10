@@ -222,6 +222,12 @@ export default function useCentros() {
                 centro.telf_cen
                     ?.toLowerCase()
                     .includes(query)
+
+                ||
+
+                centro.capacidad_cen
+                    ?.toString()
+                    .includes(query)
             );
         });
 

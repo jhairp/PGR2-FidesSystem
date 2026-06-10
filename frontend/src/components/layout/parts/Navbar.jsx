@@ -16,9 +16,9 @@ export default function Navbar({
             <div className="h-full px-6 md:px-10 flex items-center justify-between">
 
                 <button
-                    onClick={onOpenMenu}
-                    className="lg:hidden p-2 text-slate-600 dark:text-slate-300"
-                >
+    onClick={onOpenMenu}
+    className="p-2 text-slate-600 dark:text-slate-300 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-xl transition"
+>
                     <Menu size={24} />
                 </button>
 

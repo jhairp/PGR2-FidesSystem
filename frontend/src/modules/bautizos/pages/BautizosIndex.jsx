@@ -19,15 +19,20 @@ import BautizoCreateModal from '../components/BautizoCreateModal'
 import BautizoEditModal
 from '../components/BautizoEditModal'
 
+import ScannerModal from '../../scanner/components/ScannerModal'
+
 import {
     CreateButton,
     ReportButton,
 } from '../../../components/ui/Buttons'
 
+import { ScanLine } from 'lucide-react'
+import { useNavigate } from 'react-router-dom'
 
 export default function BautizosIndex() {
 
     const bautizosHook = useBautizos()
+    const navigate = useNavigate()
 
     const {
 
@@ -70,6 +75,11 @@ export default function BautizosIndex() {
         closeEdit,
 
         updateBautizo,
+
+        showScannerModal,
+        abrirScannerModal,
+        cerrarScannerModal,
+
     } = bautizosHook
 
 
@@ -99,15 +109,30 @@ export default function BautizosIndex() {
 
                 actions={
                     <>
-
                         <ReportButton />
+
+                        <button
+                            onClick={abrirScannerModal}
+                            className="
+                                px-6 py-3
+                                rounded-2xl
+                                bg-emerald-600
+                                hover:bg-emerald-700
+                                text-white
+                                font-bold
+                                flex items-center gap-2
+                                transition-all
+                            "
+                        >
+                            <ScanLine size={18} />
+                            Escanear
+                        </button>
 
                         <CreateButton
                             onClick={abrirCreateModal}
                         >
                             Nuevo Bautizo
                         </CreateButton>
-
                     </>
                 }
             />
@@ -163,6 +188,21 @@ export default function BautizosIndex() {
                 bautizo={editingBautizo}
 
                 usuarios={usuarios}
+
+            />
+            <ScannerModal
+
+                show={showScannerModal}
+
+                onClose={cerrarScannerModal}
+
+                createBautizo={createBautizo}
+
+                usuarios={usuarios}
+
+                centros={centros}
+
+                loading={saving}
 
             />
 

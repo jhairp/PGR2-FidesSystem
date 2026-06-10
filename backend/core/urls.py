@@ -69,4 +69,14 @@ urlpatterns = [
         'api/',
         include('apps.horarios.urls')
     ),
+
+    path(
+        'api/',
+        include('apps.eventos.urls')
+    ),
+
+    path(
+        "api/scanner/",
+        include("apps.scanner.urls")
+    ),
 ]

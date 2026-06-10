@@ -44,6 +44,14 @@ export default function Sidebar({
 
         navigate('/login')
     }
+
+    const handleNavClick = () => {
+
+        if (window.innerWidth < 1024) {
+
+            onClose()
+        }
+    }
     
     const { user } = useAuth()
 
@@ -53,23 +61,24 @@ export default function Sidebar({
             user?.id_rol_1
         )
 
+    const isCliente =
+        user?.id_rol_1 === 4
+
     return (
 
         <aside className={`
-            fixed inset-y-0 left-0 z-[60]
-            w-72
-            bg-white dark:bg-[#11141D]
-            border-r border-slate-200 dark:border-slate-800
-            transition-transform duration-500
-            lg:translate-x-0
-            lg:sticky
-            lg:top-0
-            lg:h-screen
-            ${isOpen
-                ? 'translate-x-0'
-                : '-translate-x-full'
-            }
-        `}>
+    fixed inset-y-0 left-0 z-[60]
+    w-72
+    bg-white dark:bg-[#11141D]
+    border-r border-slate-200 dark:border-slate-800
+    transition-transform duration-500
+    top-0
+    h-screen
+    ${isOpen
+        ? 'translate-x-0'
+        : '-translate-x-full'
+    }
+`}>
 
             <div className="flex flex-col h-full">
 
@@ -124,7 +133,7 @@ export default function Sidebar({
                     </div>
 
                     <button
-                        onClick={onClose}
+                        onClick={handleNavClick}
                         className="
                             lg:hidden
                             p-2
@@ -147,31 +156,22 @@ export default function Sidebar({
                     overflow-y-auto
                     py-4
                 ">
+                    {
+                        isAdmin && (
+                            <NavItem
+                                href="/"
+                                icon={<PieChart size={20} />}
+                                label="Panel de Control"
+                                active={url === '/'}
+                                onClick={handleNavClick}
+                            />
 
-                    <NavItem
-                        href="/"
-                        icon={<PieChart size={20} />}
-                        label="Panel de Control"
-                        active={url === '/'}
-                        onClick={onClose}
-                    />
+                            
+                        )
+                    }
+                    
 
-                    <div className="pt-4 pb-2">
-
-                        <span className="
-                            px-4
-                            text-[9px]
-                            font-black
-                            text-slate-400
-                            uppercase
-                            tracking-[0.3em]
-                        ">
-
-                            Administración
-
-                        </span>
-
-                    </div>
+                    
                     {/* NAV 
 
                     <NavItem
@@ -179,7 +179,7 @@ export default function Sidebar({
                         icon={<Shield size={20} />}
                         label="Roles del sistema"
                         active={url.startsWith('/roles')}
-                        onClick={onClose}
+                        onClick={handleNavClick}
                     />
 
                     <NavItem
@@ -187,7 +187,7 @@ export default function Sidebar({
                         icon={<Shield size={20} />}
                         label="Roles de personas"
                         active={url.startsWith('/per-roles')}
-                        onClick={onClose}
+                        onClick={handleNavClick}
                     />
                     */}
 
@@ -199,7 +199,7 @@ export default function Sidebar({
                                 icon={<Users size={20} />}
                                 label="Usuarios"
                                 active={url.startsWith('/usuarios')}
-                                onClick={onClose}
+                                onClick={handleNavClick}
                             />
 
                         )
@@ -211,7 +211,7 @@ export default function Sidebar({
                         icon={<Home size={20} />}
                         label="Parroquias"
                         active={url.startsWith('/parroquias')}
-                        onClick={onClose}
+                        onClick={handleNavClick}
                     />
 
                     */}
@@ -224,7 +224,7 @@ export default function Sidebar({
                                 icon={<MapPin size={20} />}
                                 label="Centros"
                                 active={url.startsWith('/centros')}
-                                onClick={onClose}
+                                onClick={handleNavClick}
                             />
 
                         )
@@ -238,7 +238,21 @@ export default function Sidebar({
                                 icon={<BookOpen size={20} />}
                                 label="Bautizos"
                                 active={url.startsWith('/bautizos')}
-                                onClick={onClose}
+                                onClick={handleNavClick}
+                            />
+
+                        )
+                    }
+
+                    {
+                        isCliente && (
+
+                            <NavItem
+                                href="/iglesias"
+                                icon={<MapPin size={20} />}
+                                label="Iglesias"
+                                active={url.startsWith('/iglesias')}
+                                onClick={handleNavClick}
                             />
 
                         )

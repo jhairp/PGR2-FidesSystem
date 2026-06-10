@@ -70,10 +70,16 @@ export default function MainLayout({ children }) {
                         onClose={() => setIsMobileMenuOpen(false)} 
                     />
 
-                    <div className="flex-1 min-w-0">
+                    <div
+                        className={`
+                            flex-1 min-w-0
+                            transition-all duration-500
+                            ${isMobileMenuOpen ? 'lg:ml-72' : 'ml-0'}
+                        `}
+                    >
                         {/* NAVBAR */}
                         <Navbar 
-                            onOpenMenu={() => setIsMobileMenuOpen(true)} 
+                            onOpenMenu={() => setIsMobileMenuOpen(prev => !prev)} 
                             onOpenProfile={() => setIsProfileOpen(true)}
                         />
 
@@ -86,7 +92,12 @@ export default function MainLayout({ children }) {
                                     animate={{ opacity: 1, y: 0 }}
                                     exit={{ opacity: 0, y: -15 }}
                                     transition={{ duration: 0.3 }}
-                                    className="p-6 md:p-10 lg:p-12 max-w-7xl mx-auto"
+                                    className={`
+                                        ${window.location.pathname.startsWith('/iglesias')
+                                            ? 'p-0 w-full h-[calc(100vh-80px)]'
+                                            : 'p-6 md:p-10 lg:p-12 max-w-7xl mx-auto'
+                                        }
+                                    `}
                                 >
                                     <Outlet />
                                 </motion.div>

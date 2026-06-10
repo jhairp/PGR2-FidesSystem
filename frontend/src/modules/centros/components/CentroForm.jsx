@@ -58,12 +58,21 @@ export default function CentroForm({
     const [errors, setErrors] =
         useState({});
 
+    const [uploadingImage,
+        setUploadingImage] =
+        useState(false);
+
+    const [dragOver,
+        setDragOver] =
+        useState(false);
+            
     const [data, setData] = useState(
 
         initialData || {
 
             nom_cen: "",
             telf_cen: "",
+        capacidad_cen: "",
             pais_cen: "BOLIVIA",
             municipio_cen: "",
             ciudad_cen: "",
@@ -103,7 +112,9 @@ export default function CentroForm({
 
             } catch (error) {
 
-                console.log(error);
+                console.log(
+                    error.response.data
+                );
             }
         };
 
@@ -126,7 +137,10 @@ export default function CentroForm({
 
                     telf_cen:
                         response.telf_cen || "",
-
+                        
+                    capacidad_cen:
+                        response.capacidad_cen || "",
+                    
                     parroquia:
                         response.parroquia || "",
 
@@ -149,11 +163,16 @@ export default function CentroForm({
                         response.coordenadas_cen ||
                         "-16.5000,-68.1500",
 
+                    imagenes:
+                        response.imagenes || [],
+
                 });
 
             } catch (error) {
 
-                console.log(error);
+                    console.log(
+                        error.response.data
+                    );
 
             } finally {
 
@@ -207,8 +226,16 @@ export default function CentroForm({
 
             } else {
 
+                const payload = {
+
+                    ...data,
+
+                    id_par_1:
+                        data.parroquia
+                };
+
                 await centroService.create(
-                    data
+                    payload
                 );
             }
 
@@ -244,7 +271,9 @@ export default function CentroForm({
 
         } catch (error) {
 
-            console.log(error);
+            console.log(
+                error.response.data
+            );
 
             setOverlay({
                 show: true,
@@ -295,6 +324,76 @@ export default function CentroForm({
             }, 2500);
         }
     };
+
+    const handleUploadImage =
+        async (file) => {
+
+            if (
+                !file ||
+                !centroId
+            ) {
+                return;
+            }
+
+            try {
+
+                setUploadingImage(true);
+
+                const formData =
+                    new FormData();
+
+                formData.append(
+                    "imagen",
+                    file
+                );
+
+                await api.post(
+
+                    `/centros/${centroId}/subir-imagen/`,
+
+                    formData,
+
+                    {
+                        headers: {
+                            "Content-Type":
+                                "multipart/form-data"
+                        }
+                    }
+                );
+
+                await loadCentro();
+
+                setTopAlert({
+
+                    show: true,
+
+                    type: "success",
+
+                    message:
+                        "Imagen subida correctamente"
+
+                });
+
+            } catch (error) {
+
+                console.log(error);
+
+                setTopAlert({
+
+                    show: true,
+
+                    type: "error",
+
+                    message:
+                        "Error al subir imagen"
+
+                });
+
+            } finally {
+
+                setUploadingImage(false);
+            }
+        };
 
     const inputStyle = `
         w-full
@@ -515,6 +614,44 @@ export default function CentroForm({
                                             className={
                                                 inputStyle
                                             }
+                                        />
+
+                                    </div>
+
+                                    <div>
+
+                                        <label
+                                            className={
+                                                labelStyle
+                                            }
+                                        >
+
+                                            Capacidad
+
+                                        </label>
+
+                                        <input
+
+                                            type="number"
+
+                                            min="0"
+
+                                            name="capacidad_cen"
+
+                                            value={
+                                                data.capacidad_cen
+                                            }
+
+                                            onChange={
+                                                handleChange
+                                            }
+
+                                            className={
+                                                inputStyle
+                                            }
+
+                                            placeholder="300"
+
                                         />
 
                                     </div>
@@ -752,6 +889,267 @@ export default function CentroForm({
                             </div>
 
                         </div>
+
+                        {
+                            centroId && (
+
+                                <div
+                                    className="
+                                        bg-slate-50
+                                        dark:bg-slate-900/40
+                                        p-6
+                                        rounded-[2.5rem]
+                                        border
+                                        border-slate-100
+                                        dark:border-slate-800
+                                    "
+                                >
+
+                                    <h4
+                                        className="
+                                            text-[11px]
+                                            font-black
+                                            uppercase
+                                            mb-4
+                                        "
+                                    >
+
+                                        Galería de Imágenes
+
+                                    </h4>
+
+                                    <div
+
+                                        onDragOver={(e) => {
+
+                                            e.preventDefault();
+
+                                            setDragOver(true);
+                                        }}
+
+                                        onDragLeave={() => {
+
+                                            setDragOver(false);
+                                        }}
+
+                                        onDrop={(e) => {
+
+                                            e.preventDefault();
+
+                                            setDragOver(false);
+
+                                            const file =
+                                                e.dataTransfer.files[0];
+
+                                            handleUploadImage(
+                                                file
+                                            );
+                                        }}
+
+                                        onClick={() =>
+                                            document
+                                                .getElementById(
+                                                    "upload-image"
+                                                )
+                                                .click()
+                                        }
+
+                                        className={`
+                                            border-2
+                                            border-dashed
+                                            rounded-3xl
+                                            p-10
+                                            text-center
+                                            cursor-pointer
+                                            transition-all
+
+                                            ${
+                                                dragOver
+
+                                                ? `
+                                                    border-indigo-500
+                                                    bg-indigo-50
+                                                    dark:bg-indigo-900/20
+                                                `
+
+                                                : `
+                                                    border-slate-300
+                                                    dark:border-slate-700
+                                                `
+                                            }
+                                        `}
+                                    >
+
+                                        <p
+                                            className="
+                                                font-bold
+                                                text-slate-700
+                                                dark:text-slate-200
+                                            "
+                                        >
+
+                                            Arrastra imágenes aquí
+
+                                        </p>
+
+                                        <p
+                                            className="
+                                                text-sm
+                                                text-slate-500
+                                                mt-1
+                                            "
+                                        >
+
+                                            o haz clic para seleccionar
+
+                                        </p>
+
+                                        {
+                                            uploadingImage && (
+
+                                                <p
+                                                    className="
+                                                        mt-4
+                                                        font-bold
+                                                        text-indigo-600
+                                                    "
+                                                >
+
+                                                    Subiendo imagen...
+
+                                                </p>
+                                            )
+                                        }
+
+                                    </div>
+
+                                    <input
+
+                                        id="upload-image"
+
+                                        hidden
+
+                                        type="file"
+
+                                        accept="image/*"
+
+                                        onChange={(e) => {
+
+                                            const file =
+                                                e.target.files[0];
+
+                                            if (file) {
+
+                                                handleUploadImage(
+                                                    file
+                                                );
+                                            }
+                                        }}
+                                    />
+
+                                    <div
+                                        className="
+                                            grid
+                                            grid-cols-2
+                                            md:grid-cols-3
+                                            gap-3
+                                            mt-5
+                                        "
+                                    >
+
+                                        {
+                                            (
+                                                data.imagenes || []
+                                            ).map(
+                                                (img) => (
+
+                                                    <div
+                                                        key={img.id_img}
+                                                        className="
+                                                            relative
+                                                            group
+                                                        "
+                                                    >
+
+                                                        <button
+
+                                                            type="button"
+
+                                                            onClick={
+                                                                async () => {
+
+                                                                    if (
+                                                                        !window.confirm(
+                                                                            "¿Eliminar imagen?"
+                                                                        )
+                                                                    ) {
+                                                                        return;
+                                                                    }
+
+                                                                    await api.delete(
+
+                                                                        `/imagenes-centro/${img.id_img}/`
+                                                                    );
+
+                                                                    await loadCentro();
+                                                                }
+                                                            }
+
+                                                            className="
+                                                                absolute
+                                                                top-2
+                                                                right-2
+                                                                w-8
+                                                                h-8
+                                                                rounded-full
+                                                                bg-red-600
+                                                                hover:bg-red-700
+                                                                text-white
+                                                                font-bold
+                                                                shadow-lg
+                                                                z-10
+                                                                opacity-0
+                                                                group-hover:opacity-100
+                                                                transition-all
+                                                            "
+                                                        >
+
+                                                            ×
+
+                                                        </button>
+
+                                                        <img
+
+                                                            src={
+                                                                img.url_img
+                                                            }
+
+                                                            alt=""
+
+                                                            className="
+                                                                w-full
+                                                                h-28
+                                                                object-cover
+                                                                rounded-2xl
+                                                                border
+                                                                border-slate-200
+                                                                dark:border-slate-700
+                                                                shadow-sm
+                                                            "
+                                                        />
+
+                                                    </div>
+
+                                                )
+                                            )
+                                        }
+
+                                    </div>
+
+                                </div>
+
+                            )
+                        }
 
                         {/* BOTON */}
 

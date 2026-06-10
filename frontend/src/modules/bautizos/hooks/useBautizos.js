@@ -65,14 +65,20 @@ export default function useBautizos() {
 
     } catch (error) {
 
-        console.error(error)
+    console.error("ERROR COMPLETO")
+    console.error(error)
 
-        setOverlay({
-            show: true,
-            type: 'error'
-        })
+    console.error("RESPUESTA")
 
-    } finally {
+    console.log(
+        error.response?.data
+    )
+
+    setOverlay({
+        show: true,
+        type: 'error'
+    })
+} finally {
 
         setSaving(false)
 
@@ -180,12 +186,24 @@ const updateBautizo = async (formData) => {
             // CENTROS
             // =========================
 
-            setCentros([
-    {
-                    id_cen: 1,
-                    nom_cen: 'Centro Principal'
-                }
-            ])
+            try {
+
+                const centrosResponse =
+                    await bautizoService.getCentros()
+
+                setCentros(
+                    centrosResponse
+                )
+
+            } catch (error) {
+
+                console.log(
+                    'Centros no disponibles'
+                )
+
+                console.error(error)
+            }
+
 
             // =========================
             // USUARIOS
@@ -301,6 +319,19 @@ const updateBautizo = async (formData) => {
         }
     }
 
+    const [showScannerModal, setShowScannerModal] =
+        useState(false)
+
+    const abrirScannerModal = () => {
+
+        setShowScannerModal(true)
+    }
+
+    const cerrarScannerModal = () => {
+
+        setShowScannerModal(false)
+    }
+
     return {
 
         bautizos,
@@ -342,5 +373,8 @@ const updateBautizo = async (formData) => {
         closeEdit,
 
         updateBautizo,
+        showScannerModal,
+        abrirScannerModal,
+        cerrarScannerModal,
     }
 }

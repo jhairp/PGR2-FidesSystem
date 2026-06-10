@@ -25,10 +25,10 @@ class Parroquia(models.Model):
 
 
 class Centro(models.Model):
-    ESTADOS = (
-        ("ACTIVO", "ACTIVO"),
-        ("INACTIVO", "INACTIVO"),
-    )
+    ESTADOS = [
+        ("activo", "Activo"),
+        ("inactivo", "Inactivo"),
+    ]
     id_cen = models.BigAutoField(primary_key=True)
     nom_cen = models.CharField(max_length=255)
     telf_cen = models.CharField(
@@ -80,6 +80,9 @@ class Centro(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
+    capacidad_cen = models.PositiveIntegerField(
+        default=0
+    )
     class Meta:
         db_table = "centros"
 
@@ -127,3 +130,24 @@ class Horario(models.Model):
 
     def __str__(self):
         return f"{self.hora_ini_hor} - {self.hora_fin_hor}"
+
+class ImagenCentro(models.Model):
+
+    id_img = models.BigAutoField(
+        primary_key=True
+    )
+
+    url_img = models.TextField()
+
+    centro = models.ForeignKey(
+        Centro,
+        on_delete=models.CASCADE,
+        related_name="imagenes",
+        db_column="id_cen_5"
+    )
+
+    class Meta:
+        db_table = "imagenes_centro"
+
+    def __str__(self):
+        return self.url_img

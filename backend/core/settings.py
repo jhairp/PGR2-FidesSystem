@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 from datetime import timedelta
+from decouple import config
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
     'apps.authentication',
 
     'apps.sacramentos.bautizos',
+    'apps.scanner',
     'apps',
 ]
 
@@ -156,3 +158,32 @@ REST_FRAMEWORK = {
         'rest_framework_simplejwt.authentication.JWTAuthentication',
     ),
 }
+
+# ==========================================
+# EMAIL CONFIG
+# ==========================================
+
+EMAIL_BACKEND = (
+    'django.core.mail.backends.smtp.EmailBackend'
+)
+
+EMAIL_HOST = config('MAIL_HOST')
+
+EMAIL_PORT = config(
+    'MAIL_PORT',
+    cast=int
+)
+
+EMAIL_HOST_USER = config(
+    'MAIL_USERNAME'
+)
+
+EMAIL_HOST_PASSWORD = config(
+    'MAIL_PASSWORD'
+)
+
+EMAIL_USE_SSL = True
+
+DEFAULT_FROM_EMAIL = config(
+    'MAIL_FROM_ADDRESS'
+)

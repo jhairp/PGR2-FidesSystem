@@ -26,6 +26,16 @@ import CentroCreate from "../modules/centros/pages/CentroCreate";
 
 import CentroEdit from "../modules/centros/pages/CentroEdit";
 
+import IglesiasMapPage from '@/modules/iglesias/pages/IglesiasMapPage'
+
+import CalendarioPage from '@/modules/eventos/pages/CalendarioPage'
+
+import EventoPage from '@/modules/eventos/pages/EventoPage';
+
+import CalendarioGeneralPage from '@/modules/eventos/pages/CalendarioGeneralPage';
+
+import ScannerIndex from '../modules/scanner/pages/ScannerIndex'
+
 export default function AppRoutes() {
 
     return (
@@ -65,7 +75,7 @@ export default function AppRoutes() {
 
                 <Route
                     index
-                    element={<Dashboard />}
+                    element={<CalendarioGeneralPage />}
                 />
 
                 <Route
@@ -78,11 +88,24 @@ export default function AppRoutes() {
                     element={<BautizosIndex />}
                 />
 
+                <Route
+                    path="/scanner"
+                    element={<ScannerIndex />}
+                />
+
                 <Route path="/centros" element={<CentrosIndex />} />
 
                 <Route path="/centros/create" element={<CentroCreate />} />
 
                 <Route path="/centros/edit/:id" element={<CentroEdit />} />
+
+                <Route path="/iglesias" element={<IglesiasMapPage />} />
+
+                <Route path="/calendario/:id" element={<CalendarioPage />} />
+
+                <Route path="/evento" element={<EventoPage />}/>
+
+                
 
             </Route>
 
