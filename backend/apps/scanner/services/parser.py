@@ -118,6 +118,91 @@ def normalizar_texto_fijo(texto):
 
         "laiglesa": "la iglesia",
         "laiglesia": "la iglesia",
+
+        # IGLESIA
+        "laiglesa": "la iglesia",
+        "laiglesia": "la iglesia",
+        "laiglesia ": "la iglesia ",
+
+        # PARROQUIAL
+        "parrogual": "parroquial",
+        "parroguial": "parroquial",
+        "parroguial": "parroquial",
+
+        # BAUTICE
+        "bautices": "bautice",
+        "bautizo": "bautice",
+        "bautices": "bautice",
+        "vince": "bautice",
+        "vince:": "bautice",
+
+        # NACIDO EL
+        "ascitoel": "nacido el",
+        "nacitoel": "nacido el",
+        "uncitoet": "nacido el",
+        "nacidoel": "nacido el",
+        "macidoel": "nacido el",
+
+        # HIJO DE
+        "#": "hijo de",
+        "hijode": "hijo de",
+        "hijoe": "hijo de",
+        "hijodee": "hijo de",
+
+        # NATURAL DE
+        "naturside": "natural de",
+        "naturative": "natural de",
+        "nature": "natural de",
+        "naturaide": "natural de",
+        "natualde": "natural de",
+        "naturaide": "natural de",
+
+        # Y DE
+        " se ": " y de ",
+        " ye ": " y de ",
+        " sur ": " y de ",
+        " ye ": " y de ",
+
+        # FUE PADRINO
+        "preparations": "fue padrino",
+        "reventivo": "fue padrino",
+        "fuepadino": "fue padrino",
+        "fuepadirno": "fue padrino",
+        "padirno": "padrino",
+
+        # CERTIFICO
+        ". padre": " certifico padre",
+        " certitico ": " certifico ",
+        " certfico ": " certifico ",
+        " certifica ": " certifico ",
+
+        # MESES
+        "eucno": "enero",
+        "enerc": "enero",
+        "enera": "enero",
+
+        "febrerc": "febrero",
+
+        "marzc": "marzo",
+
+        "abrll": "abril",
+
+        "junic": "junio",
+
+        "julic": "julio",
+
+        "agostc": "agosto",
+
+        "setiembre": "septiembre",
+
+        "october": "octubre",
+        "octulone": "octubre",
+
+        # FRASES COMPLETAS
+        "delmes": "del mes",
+        "delario": "del año",
+        "mill novecientos": "mil novecientos",
+        "diasdelmes": "dias del mes"
     }
 
     for malo, bueno in reemplazos.items():

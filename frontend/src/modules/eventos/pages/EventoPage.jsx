@@ -56,11 +56,10 @@ export default function EventoPage() {
 
     const infoEventos = {
         MISA: {
-            precio: 'Bs. 50',
+            precio: 'Bs. 70',
             requisitos: [
                 'Nombre de la intención.',
-                'Fecha disponible.',
-                'Comprobante de pago.'
+                'pago 2 dias antes.'
             ]
         },
 
@@ -69,17 +68,19 @@ export default function EventoPage() {
             requisitos: [
                 'Certificado de nacimiento.',
                 'Fotocopia de CI de padres.',
-                'Fotocopia de CI de padrinos.'
+                'Fotocopia de CI de padrinos.',
+                'pago 2 dias antes.'
             ]
         },
 
         MATRIMONIO: {
             precio: 'Bs. 500',
             requisitos: [
-                'Certificados de bautizo.',
-                'Fotocopia de CI de ambos contrayentes.',
-                'Curso prematrimonial.',
-                'Dos testigos.'
+                'Certificados de bautizo de los novios.',
+                'Fotocopia de CI de ambos novios.',
+                'Curso prematrimonial completo.',
+                'Dos testigos.',
+                'pago 2 dias antes.'
             ]
         },
 
