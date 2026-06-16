@@ -113,23 +113,70 @@ class DetUsus(models.Model):
 
 
 class Documentos(models.Model):
-    id_doc = models.BigAutoField(primary_key=True)
-    url_doc = models.CharField(max_length=255)
-    nom_doc = models.CharField(max_length=255)
-    tipo_doc = models.CharField(max_length=255)
-    desc_doc = models.CharField(max_length=255, blank=True, null=True)
-    estado_doc = models.CharField(max_length=255)
+    """
+    Tabla documentos — refleja exactamente la BD existente.
+    managed = False porque la tabla ya existe en PostgreSQL.
+    """
+
+    ESTADO_GENERADO   = 'generado'
+    ESTADO_PENDIENTE  = 'pendiente'
+    ESTADO_APROBADO   = 'aprobado'
+    ESTADO_RECHAZADO  = 'rechazado'
+
+    ESTADO_CHOICES = [
+        (ESTADO_GENERADO,  'Generado'),
+        (ESTADO_PENDIENTE, 'Pendiente'),
+        (ESTADO_APROBADO,  'Aprobado'),
+        (ESTADO_RECHAZADO, 'Rechazado'),
+    ]
+
+    id_doc          = models.BigAutoField(primary_key=True)
+    url_doc         = models.CharField(max_length=255)          # ruta/URL del archivo subido
+    nom_doc         = models.CharField(max_length=255)          # nombre visible
+    tipo_doc        = models.CharField(max_length=255)          # ej. "partida_bautismo", "cedula"
+    desc_doc        = models.CharField(max_length=255, blank=True, null=True)
+    estado_doc      = models.CharField(
+                          max_length=255,
+                          choices=ESTADO_CHOICES,
+                          default=ESTADO_GENERADO,
+                      )
     observacion_doc = models.CharField(max_length=255, blank=True, null=True)
-    codigo_doc = models.CharField(max_length=255, blank=True, null=True)
-    id_sac_5 = models.ForeignKey('Sacramentos', models.DO_NOTHING, db_column='id_sac_5', blank=True, null=True)
-    id_usu_5 = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='id_usu_5', blank=True, null=True)
-    id_usu_6 = models.ForeignKey('Usuarios', models.DO_NOTHING, db_column='id_usu_6', related_name='documentos_id_usu_6_set', blank=True, null=True)
-    created_at = models.DateTimeField(blank=True, null=True)
-    updated_at = models.DateTimeField(blank=True, null=True)
+    codigo_doc      = models.CharField(max_length=255, blank=True, null=True)
+
+    # FK al sacramento al que pertenece el documento (puede ser nulo)
+    id_sac_5 = models.ForeignKey(
+        'apps.Sacramentos',
+        on_delete=models.DO_NOTHING,
+        db_column='id_sac_5',
+        blank=True, null=True,
+    )
+    # Usuario que subió el documento
+    id_usu_5 = models.ForeignKey(
+        'usuarios.Usuarios',
+        on_delete=models.DO_NOTHING,
+        db_column='id_usu_5',
+        blank=True, null=True,
+        related_name='documentos_subidos',
+    )
+    # Usuario que aprobó / revisó
+    id_usu_6 = models.ForeignKey(
+        'usuarios.Usuarios',
+        on_delete=models.DO_NOTHING,
+        db_column='id_usu_6',
+        blank=True, null=True,
+        related_name='documentos_revisados',
+    )
+
+    created_at = models.DateTimeField(auto_now_add=True, blank=True, null=True)
+    updated_at = models.DateTimeField(auto_now=True, blank=True, null=True)
 
     class Meta:
-        managed = False
+        managed = False          # la tabla ya existe, no la toques
         db_table = 'documentos'
+
+    def __str__(self):
+        return f"{self.nom_doc} ({self.tipo_doc})"
+
 
 
 class Eventos(models.Model):

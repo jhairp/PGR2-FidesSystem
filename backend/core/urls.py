@@ -20,6 +20,9 @@ from django.urls import (
     include,
 )
 
+from django.conf import settings
+from django.conf.urls.static import static
+
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
@@ -79,4 +82,9 @@ urlpatterns = [
         "api/scanner/",
         include("apps.scanner.urls")
     ),
-]
+
+    path(
+        'api/documentos/',
+        include('apps.documentos.urls')
+    ),
+] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

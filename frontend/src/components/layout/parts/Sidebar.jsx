@@ -1,15 +1,15 @@
+// ARCHIVO COMPLETO — reemplaza frontend/src/components/layout/parts/Sidebar.jsx
 import React from 'react'
 
 import {
     Cross,
     X,
-    Home,
     MapPin,
     PieChart,
-    Shield,
     Users,
     LogOut,
     BookOpen,
+    FolderOpen,          // ← nuevo icono para Documentos
 } from 'lucide-react'
 
 import {
@@ -56,7 +56,6 @@ export default function Sidebar({
     const { user } = useAuth()
 
     const isAdmin =
-
         [1,2,3].includes(
             user?.id_rol_1
         )
@@ -165,31 +164,8 @@ export default function Sidebar({
                                 active={url === '/'}
                                 onClick={handleNavClick}
                             />
-
-                            
                         )
                     }
-                    
-
-                    
-                    {/* NAV 
-
-                    <NavItem
-                        href="/roles"
-                        icon={<Shield size={20} />}
-                        label="Roles del sistema"
-                        active={url.startsWith('/roles')}
-                        onClick={handleNavClick}
-                    />
-
-                    <NavItem
-                        href="/per-roles"
-                        icon={<Shield size={20} />}
-                        label="Roles de personas"
-                        active={url.startsWith('/per-roles')}
-                        onClick={handleNavClick}
-                    />
-                    */}
 
                     {
                         isAdmin && (
@@ -204,17 +180,6 @@ export default function Sidebar({
 
                         )
                     }
-
-                    {/* NAV 
-                    <NavItem
-                        href="/parroquias"
-                        icon={<Home size={20} />}
-                        label="Parroquias"
-                        active={url.startsWith('/parroquias')}
-                        onClick={handleNavClick}
-                    />
-
-                    */}
 
                     {
                         isAdmin && (
@@ -238,6 +203,21 @@ export default function Sidebar({
                                 icon={<BookOpen size={20} />}
                                 label="Bautizos"
                                 active={url.startsWith('/bautizos')}
+                                onClick={handleNavClick}
+                            />
+
+                        )
+                    }
+
+                    {/* ── NUEVO: Documentos (visible para admin y cliente) ── */}
+                    {
+                        (isAdmin || isCliente) && (
+
+                            <NavItem
+                                href="/documentos"
+                                icon={<FolderOpen size={20} />}
+                                label="Documentos"
+                                active={url.startsWith('/documentos')}
                                 onClick={handleNavClick}
                             />
 

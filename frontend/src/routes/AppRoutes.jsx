@@ -1,3 +1,4 @@
+// ARCHIVO COMPLETO — reemplaza frontend/src/routes/AppRoutes.jsx
 import {
     Routes,
     Route,
@@ -35,6 +36,9 @@ import EventoPage from '@/modules/eventos/pages/EventoPage';
 import CalendarioGeneralPage from '@/modules/eventos/pages/CalendarioGeneralPage';
 
 import ScannerIndex from '../modules/scanner/pages/ScannerIndex'
+
+// ── NUEVO ──
+import DocumentosIndex from '../modules/documentos/pages/DocumentosIndex'
 
 export default function AppRoutes() {
 
@@ -105,7 +109,8 @@ export default function AppRoutes() {
 
                 <Route path="/evento" element={<EventoPage />}/>
 
-                
+                {/* ── NUEVA RUTA ── */}
+                <Route path="/documentos" element={<DocumentosIndex />} />
 
             </Route>
 
