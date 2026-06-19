@@ -319,6 +319,15 @@ const updateBautizo = async (formData) => {
         }
     }
 
+    const openCertificate = (bautizo) => {
+
+        window.open(
+            bautizoService.getCertificateUrl(bautizo.id_sac),
+            '_blank',
+            'noopener,noreferrer'
+        )
+    }
+
     const [showScannerModal, setShowScannerModal] =
         useState(false)
 
@@ -373,6 +382,7 @@ const updateBautizo = async (formData) => {
         closeEdit,
 
         updateBautizo,
+        openCertificate,
         showScannerModal,
         abrirScannerModal,
         cerrarScannerModal,

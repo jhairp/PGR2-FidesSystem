@@ -2,11 +2,14 @@ import Badge from '../../../components/ui/Badge'
 
 import TableActions from '../../../components/ui/TableActions'
 
+import { FileText } from 'lucide-react'
+
 export default function BautizoTable({
     bautizos,
     toggleStatus,
     onView,
     onEdit,
+    onCertificate,
 }) {
 
     return (
@@ -252,8 +255,33 @@ export default function BautizoTable({
                                 ">
 
                                     <div className="
-                                        flex justify-center
+                                        flex justify-center items-center gap-3
                                     ">
+
+                                        <button
+                                            onClick={() => onCertificate(bautizo)}
+                                            className="
+                                                p-2.5
+                                                bg-sky-50
+                                                text-sky-600
+                                                hover:bg-sky-600
+                                                hover:text-white
+                                                rounded-xl
+                                                transition-all
+                                                duration-200
+                                                active:scale-95
+                                                dark:bg-sky-500/10
+                                                dark:text-sky-400
+                                                dark:hover:bg-sky-600
+                                                dark:hover:text-white
+                                            "
+                                            title="Imprimir certificado"
+                                        >
+                                            <FileText
+                                                size={16}
+                                                strokeWidth={2.5}
+                                            />
+                                        </button>
 
                                         <TableActions
                                             item={bautizo}

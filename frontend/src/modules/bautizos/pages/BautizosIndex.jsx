@@ -75,6 +75,7 @@ export default function BautizosIndex() {
         closeEdit,
 
         updateBautizo,
+        openCertificate,
 
         showScannerModal,
         abrirScannerModal,
@@ -151,6 +152,7 @@ export default function BautizosIndex() {
 
                 onView={openView}
                 onEdit={openEdit}
+                onCertificate={openCertificate}
             />
 
             <BautizoModal

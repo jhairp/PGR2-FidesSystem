@@ -4,7 +4,8 @@ from .views import (
     BautizoListView,
     BautizoCreateView,
     BautizoUpdateView,
-    BautizoEstadoView
+    BautizoEstadoView,
+    BautizoCertificadoView
 )
 
 urlpatterns = [
@@ -47,6 +48,16 @@ urlpatterns = [
         '<int:id_sac>/estado/',
         BautizoEstadoView.as_view(),
         name='cambiar_estado_bautizo'
+    ),
+
+    # =========================
+    # CERTIFICADO
+    # =========================
+
+    path(
+        '<int:id_sac>/certificado/',
+        BautizoCertificadoView.as_view(),
+        name='certificado_bautizo'
     ),
 
 ]
