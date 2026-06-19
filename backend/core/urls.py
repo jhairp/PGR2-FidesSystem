@@ -26,6 +26,7 @@ from django.conf.urls.static import static
 from rest_framework_simplejwt.views import (
     TokenRefreshView,
 )
+from apps.documentos.views import SacramentosListView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
@@ -86,5 +87,10 @@ urlpatterns = [
     path(
         'api/documentos/',
         include('apps.documentos.urls')
+    ),
+
+    path(
+        'api/sacramentos/',
+        SacramentosListView.as_view()
     ),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

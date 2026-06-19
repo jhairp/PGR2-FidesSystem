@@ -3,6 +3,7 @@ from .views import (
     DocumentoListCreateView,
     DocumentoDetailView,
     DocumentoEstadoView,
+    DocumentoArchivoView,
 )
 
 urlpatterns = [
@@ -14,4 +15,7 @@ urlpatterns = [
 
     # Cambiar estado
     path('<int:pk>/estado/', DocumentoEstadoView.as_view()),
+
+    # Vista previa / archivo
+    path('<int:pk>/archivo/', DocumentoArchivoView.as_view()),
 ]
