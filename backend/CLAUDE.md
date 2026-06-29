@@ -62,6 +62,15 @@ cada app — esa convención antigua ya se eliminó.
 - `backend/debug_*.jpg` — salidas de depuración del módulo `scanner`, ignorar.
 - `__pycache__/`, `.pytest_cache/` — ignorar siempre.
 
+## Roles del sistema
+- por el momento existen 4 roles.
+- `super administrador`puede ver y realizar cualquier accion del sistema.
+- `sacerdote`se encarga de abms secretarios al sistema, abms de sacramentos, abms de eventos, abms de documentos. Todo esto de la iglesia(centro) al que pertenece.
+- `Secretario`abms de los registros sacramentales, y eventos, de igual manera de la iglesia (centro que pertenece).
+- `Fiel`Ver los eventos que existen en la iglesia de su preferencia.
+
+ahora un sacerdote puede pertenecer a diferentes iglesias, pero si o si de la misma parroquia y el secretario solo pertenece a una iglesia. El que designa a donde pertenece cada quien es el super admin.
+
 ## Comandos
 ```bash
 python manage.py runserver
