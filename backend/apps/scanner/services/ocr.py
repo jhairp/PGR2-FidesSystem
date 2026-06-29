@@ -65,21 +65,21 @@ def reconocer_imagen(resultado_detector):
             # PREPROCESADO
             # ---------------------------------
 
+            # Convertir a escala de grises para preprocesado
             gray = cv2.cvtColor(
                 recorte,
                 cv2.COLOR_BGR2GRAY
             )
 
-            #gray = cv2.resize(
-            #    gray,
-            #    None,
-            #    fx=2,
-            #    fy=2,
-            #    interpolation=cv2.INTER_CUBIC
-            #)
+            # TrOCR requiere imagen RGB (3 canales)
+            # Convertir grayscale -> RGB apilando el canal 3 veces
+            rgb = cv2.cvtColor(
+                gray,
+                cv2.COLOR_GRAY2RGB
+            )
 
             imagen_pil = Image.fromarray(
-                gray
+                rgb
             )
 
             # ---------------------------------

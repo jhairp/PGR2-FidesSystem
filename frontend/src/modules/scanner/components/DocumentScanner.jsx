@@ -49,13 +49,12 @@ export default function DocumentScanner({
                 await scannerService.detectar(
                     file
                 )
-                setDatosOCR(
-                    resultado.datos
-                )
 
             console.log("Resultado recibido")
-
             console.log(resultado)
+
+            setDatosOCR(resultado.datos)
+            setTextoOCR(resultado.texto_ocr || '')
 
         } catch (error) {
 

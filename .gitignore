@@ -1,0 +1,42 @@
+# =========================================================
+# SistemaParroquialUI - .gitignore raíz
+# Cubre backend (Django/Python) y frontend (React/Vite)
+# Generado para evitar que entornos y artefactos pesados
+# entren al repo y al contexto de Claude Code.
+# =========================================================
+
+# --- Python / Django (backend) ---
+backend/venv/
+backend/env/
+backend/.venv/
+**/__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+*.sqlite3
+backend/staticfiles/
+backend/media/documentos/*.pdf
+backend/media/certificados/**/*.pdf
+.env
+backend/.env
+
+# --- Node / React / Vite (frontend) ---
+**/node_modules/
+frontned/dist/
+frontned/build/
+frontned/.vite/
+*.local
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# --- Editores / OS ---
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
+
+# --- Claude Code (contexto local, no compartir) ---
+.claude/local/
+.claude/*.log

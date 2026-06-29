@@ -26,7 +26,7 @@ import {
     ReportButton,
 } from '../../../components/ui/Buttons'
 
-import { ScanLine } from 'lucide-react'
+import { Palette, ScanLine } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 
 export default function BautizosIndex() {
@@ -40,7 +40,6 @@ export default function BautizosIndex() {
         loading,
 
         showModal,
-        abrirModal,
         cerrarModal,
 
         showCreateModal,
@@ -76,6 +75,8 @@ export default function BautizosIndex() {
 
         updateBautizo,
         openCertificate,
+        certificateHtml,
+        clearCertificateHtml,
 
         showScannerModal,
         abrirScannerModal,
@@ -109,8 +110,25 @@ export default function BautizosIndex() {
                 subtitle="Gestión de Bautizos"
 
                 actions={
-                    <>
+                    <div className="flex flex-wrap gap-3">
                         <ReportButton />
+
+                        <button
+                            onClick={() => navigate('/bautizos/certificado-editor')}
+                            className="
+                                px-6 py-3
+                                rounded-2xl
+                                bg-sky-600
+                                hover:bg-sky-700
+                                text-white
+                                font-bold
+                                flex items-center gap-2
+                                transition-all
+                            "
+                        >
+                            <Palette size={18} />
+                            Editar Certificado
+                        </button>
 
                         <button
                             onClick={abrirScannerModal}
@@ -134,7 +152,7 @@ export default function BautizosIndex() {
                         >
                             Nuevo Bautizo
                         </CreateButton>
-                    </>
+                    </div>
                 }
             />
 
@@ -207,6 +225,22 @@ export default function BautizosIndex() {
                 loading={saving}
 
             />
+
+            {certificateHtml && (
+                <iframe
+                    title="Impresion de certificado"
+                    srcDoc={certificateHtml}
+                    className="fixed w-0 h-0 opacity-0 pointer-events-none"
+                    onLoad={(event) => {
+                        try {
+                            event.currentTarget.contentWindow.focus()
+                            event.currentTarget.contentWindow.print()
+                        } finally {
+                            setTimeout(clearCertificateHtml, 1200)
+                        }
+                    }}
+                />
+            )}
 
         </div>
     )

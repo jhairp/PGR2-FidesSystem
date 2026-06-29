@@ -13,7 +13,41 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 import os
 from pathlib import Path
 from datetime import timedelta
-from decouple import config
+
+try:
+    from decouple import config
+except ModuleNotFoundError:
+    _ENV_CACHE = None
+
+    def _load_env_file():
+        global _ENV_CACHE
+
+        if _ENV_CACHE is not None:
+            return _ENV_CACHE
+
+        env_path = Path(__file__).resolve().parent.parent / '.env'
+        values = {}
+
+        if env_path.exists():
+            for line in env_path.read_text(encoding='utf-8').splitlines():
+                line = line.strip()
+
+                if not line or line.startswith('#') or '=' not in line:
+                    continue
+
+                key, value = line.split('=', 1)
+                values[key.strip()] = value.strip().strip('"').strip("'")
+
+        _ENV_CACHE = values
+        return values
+
+    def config(key, default=None, cast=None):
+        value = os.environ.get(key, _load_env_file().get(key, default))
+
+        if cast and value is not None:
+            return cast(value)
+
+        return value
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent

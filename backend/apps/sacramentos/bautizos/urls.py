@@ -5,7 +5,9 @@ from .views import (
     BautizoCreateView,
     BautizoUpdateView,
     BautizoEstadoView,
-    BautizoCertificadoView
+    BautizoCertificadoView,
+    CertificadoAssetUploadView,
+    CertificadoTemplateView
 )
 
 urlpatterns = [
@@ -58,6 +60,18 @@ urlpatterns = [
         '<int:id_sac>/certificado/',
         BautizoCertificadoView.as_view(),
         name='certificado_bautizo'
+    ),
+
+    path(
+        'certificado/template/',
+        CertificadoTemplateView.as_view(),
+        name='template_certificado_bautizo'
+    ),
+
+    path(
+        'certificado/assets/',
+        CertificadoAssetUploadView.as_view(),
+        name='assets_certificado_bautizo'
     ),
 
 ]

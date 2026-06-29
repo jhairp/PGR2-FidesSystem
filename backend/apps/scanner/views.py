@@ -5,14 +5,14 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 
-from .services.detector import detectar_campos
-from .services.ocr import reconocer_imagen
-from .services.parser import parsear_partida
-
 
 class DetectarPartidaView(APIView):
 
     def post(self, request):
+
+        from .services.detector import detectar_campos
+        from .services.ocr import reconocer_imagen
+        from .services.parser import parsear_partida
 
         if "imagen" not in request.FILES:
 
@@ -54,12 +54,16 @@ class DetectarPartidaView(APIView):
                 resultado_detector
             )
 
+            print("=" * 50)
+            print("TEXTO OCR:")
+            print(repr(texto))
+            print("=" * 50)
+
             print(
                 "[OCR] Texto obtenido:"
             )
 
             print(texto)
-
             datos = parsear_partida(
                 texto
             )

@@ -21,7 +21,7 @@ export default function useBautizos() {
         type: 'success'
     })
 
-    const [topAlert, setTopAlert] = useState({
+    const [topAlert] = useState({
         show: false,
         type: 'success',
         message: ''
@@ -216,7 +216,7 @@ const updateBautizo = async (formData) => {
 
                 setUsuarios(usuariosResponse)
 
-            } catch (error) {
+            } catch {
 
                 console.log(
                     'Usuarios no disponibles'
@@ -319,17 +319,34 @@ const updateBautizo = async (formData) => {
         }
     }
 
-    const openCertificate = (bautizo) => {
-
-        window.open(
-            bautizoService.getCertificateUrl(bautizo.id_sac),
-            '_blank',
-            'noopener,noreferrer'
-        )
-    }
-
     const [showScannerModal, setShowScannerModal] =
         useState(false)
+
+    const [certificateHtml, setCertificateHtml] =
+        useState('')
+
+    const openCertificate = async (bautizo) => {
+
+        try {
+
+            const response = await fetch(
+                bautizoService.getCertificateUrl(bautizo.id_sac)
+            )
+
+            const html = await response.text()
+
+            setCertificateHtml(html)
+
+        } catch (error) {
+
+            console.error(error)
+        }
+    }
+
+    const clearCertificateHtml = () => {
+
+        setCertificateHtml('')
+    }
 
     const abrirScannerModal = () => {
 
@@ -383,6 +400,8 @@ const updateBautizo = async (formData) => {
 
         updateBautizo,
         openCertificate,
+        certificateHtml,
+        clearCertificateHtml,
         showScannerModal,
         abrirScannerModal,
         cerrarScannerModal,

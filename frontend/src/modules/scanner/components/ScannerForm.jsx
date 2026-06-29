@@ -62,17 +62,20 @@ export default function ScannerForm({
 
         if (!datosOCR) return
 
+        // Filtrar campos null/undefined para no romper inputs controlados
+        const datosFiltrados = Object.fromEntries(
+            Object.entries(datosOCR).filter(([, v]) => v !== null && v !== undefined)
+        )
+
         setForm(prev => ({
 
             ...prev,
 
-            ...datosOCR,
+            ...datosFiltrados,
 
-            fecha_sac:
-                datosOCR.fecha_bautizo || '',
+            fecha_sac: datosOCR.fecha_bautizo || prev.fecha_sac,
 
-            par_lib:
-                datosOCR.num_partida || ''
+            par_lib: datosOCR.num_partida || prev.par_lib
 
         }))
 
