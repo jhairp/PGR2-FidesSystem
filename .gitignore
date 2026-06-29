@@ -34,6 +34,10 @@ backend/debug_*.jpg
 # backend/media/certificados/templates/*.json SÍ se versionan:
 # son plantillas de entrada que usa certificados.py, no output generado.
 
+# --- Código legacy candidato a archivar/borrar ---
+# apixxx/ parece ser una API previa abandonada (ParCen.py, PerUsu.py,
+# "apps coratado.py"). Mientras se confirme y borre, se excluye del contexto:
+backend/apixxx/
 
 # --- Node / React / Vite (frontend) ---
 **/node_modules/
