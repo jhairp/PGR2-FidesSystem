@@ -4,14 +4,17 @@ Sistema de gestión parroquial. Dos servicios independientes que se comunican v�
 
 ## Stack
 - **Backend**: Django + DRF (`backend/`). Ver `backend/CLAUDE.md`.
-- **Frontend**: React + Vite (`frontned/`). Ver `frontned/CLAUDE.md`.
+- **Frontend**: React + Vite (`frontend/`). Ver `frontend/CLAUDE.md`.
 - Auth: JWT (`djangorestframework_simplejwt`) + Google Auth.
+- Dependencias de Node viven **solo** en `frontend/package.json` (calendario con
+  FullCalendar para el módulo `eventos`). No debe existir `package.json` en la
+  raíz ni en `backend/` — si reaparece, es un error de instalación, no una
+  dependencia real del backend.
 
-## Estructura (filtrada, sin venv/node_modules/__pycache__)
+## Estructura (filtrada, sin venv/node_modules/__pycache__/Backups)
 ```
 .
 ├── backend/
-│   ├── core/            # settings, urls, asgi/wsgi del proyecto Django
 │   ├── apps/
 │   │   ├── authentication/
 │   │   ├── usuarios/
@@ -23,46 +26,46 @@ Sistema de gestión parroquial. Dos servicios independientes que se comunican v�
 │   │   ├── horarios/
 │   │   ├── documentos/
 │   │   └── scanner/
+│   ├── core/              # settings, urls, asgi/wsgi
+│   ├── media/
+│   │   ├── certificados/   # plantillas (assets + json) — SÍ versionadas
+│   │   └── documentos/      # PDFs generados — NO versionados
+│   ├── tests/unit/         # única convención de testing del backend
 │   └── manage.py
-└── frontned/
+└── frontend/
     └── src/
-        ├── modules/      # 1:1 con las apps del backend
-        ├── pages/
+        ├── modules/        # 1:1 con las apps del backend
         ├── components/
         ├── routes/
         └── api/
 ```
-
-Nota: cada app de `backend/apps/` tiene su módulo equivalente en `frontned/src/modules/`
-con el mismo nombre o uno muy cercano (ej. `usuarios` ↔ `usuarios`, `documentos` ↔ `documentos`).
-Al pedir un cambio end-to-end, indica si afecta a uno o ambos lados para no cargar
-contexto innecesario del lado que no aplica.
-
 ## Convenciones generales
-- Cada app de Django sigue el patrón `models → serializers → services → views → urls`.
+- Cada app de Django sigue `models → serializers → services → views → urls`.
   La lógica de negocio vive en `services.py`, no en `views.py`.
+- **Modelos: patrón mixto, verificar caso por caso.** Algunas apps usan un
+  modelo general compartido (ej. relacionado con `personas`), otras definen
+  su propio modelo independiente. No asumir un patrón uniforme: antes de
+  tocar una entidad, revisar primero si trabaja con modelo propio o
+  compartido. Ver detalle en `backend/CLAUDE.md`.
 - Cada módulo de React sigue `components/ → hooks/ → pages/ → services/`.
-- No commitear `backend/venv/`, `node_modules/`, `__pycache__/` ni PDFs reales de
-  `backend/media/documentos/` (ver `.gitignore`).
+- Testing del backend: todo en `backend/tests/unit/`, no crear `test.py`
+  sueltos dentro de cada app.
 
 ## Comandos frecuentes
 ```bash
 # Backend
 cd backend && python manage.py runserver
 cd backend && python manage.py makemigrations && python manage.py migrate
+cd backend && pytest
 
 # Frontend
-cd frontned && npm run dev
-cd frontned && npm run build
+cd frontend && npm run dev
+cd frontend && npm run build
 ```
 
-## Documentación por servicio
-- Backend (Django/DRF, apps, migraciones): `backend/CLAUDE.md`
-- Frontend (React, módulos, rutas): `frontned/CLAUDE.md`
-
 ## Estilo de trabajo con Claude Code
-- Para exploración/debugging repetitivo: estilo conciso (Caveman) está bien.
-- Para decisiones de arquitectura (permisos, serializers, lógica de sacramentos):
-  pedir explicaciones completas, no modo conciso.
-- Antes de añadir abstracciones nuevas (capas, patrones, helpers genéricos),
-  justificar por qué el patrón actual (`services.py` plano) no alcanza.
+- Exploración/debugging repetitivo: estilo conciso (Caveman) está bien.
+- Decisiones de arquitectura (permisos, serializers, sacramentos, modelos
+  compartidos vs propios): pedir explicaciones completas, no modo conciso.
+- Antes de añadir abstracciones nuevas, justificar por qué el patrón actual
+  no alcanza (riesgo de over-engineering, ver Ponytail).
