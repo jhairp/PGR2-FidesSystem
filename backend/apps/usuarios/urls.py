@@ -4,7 +4,8 @@ from django.urls import path
 
 from .views import (
     UsuarioListView,
-    UsuarioCreateView
+    UsuarioCreateView,
+    UsuarioUpdateView,
 )
 
 urlpatterns = [
@@ -19,6 +20,12 @@ urlpatterns = [
         'crear/',
         UsuarioCreateView.as_view(),
         name='crear_usuario'
+    ),
+
+    path(
+        '<int:id>/',
+        UsuarioUpdateView.as_view(),
+        name='actualizar_usuario'
     ),
 
 ]

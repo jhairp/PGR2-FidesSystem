@@ -10,9 +10,15 @@ import horarioService from '@/modules/centros/services/horarioService';
 import eventoService from '@/modules/eventos/services/eventoService';
 import centroService from '@/modules/centros/services/centroService';
 
+import { useAuth } from '@/modules/auth/hooks/useAuth';
+import { puedeEditar } from '@/modules/auth/roles';
+
 export default function CalendarioGeneralPage() {
 
     const navigate = useNavigate();
+
+    const { user } = useAuth();
+    const puedeCrear = puedeEditar(user, 'calendario'); // Fiel solo ve
 
     const [centros, setCentros] = useState([]);
 
@@ -356,9 +362,9 @@ export default function CalendarioGeneralPage() {
 
                     locale="es"
 
-                    selectable={true}
+                    selectable={puedeCrear}
 
-                    select={handleSelect}
+                    select={puedeCrear ? handleSelect : undefined}
 
                     businessHours={businessHours}
 

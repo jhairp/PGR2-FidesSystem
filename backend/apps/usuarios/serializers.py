@@ -73,14 +73,41 @@ class CrearUsuarioSerializer(serializers.Serializer):
     carnet_per = serializers.CharField(max_length=255)
     cel_per = serializers.CharField(max_length=255)
 
-    # USUARIO
+    # USUARIO (password la genera el servidor y se envía por correo)
     correo_usu = serializers.EmailField()
-    password = serializers.CharField(write_only=True)
     id_rol_1 = serializers.IntegerField()
 
     def validate_correo_usu(self, value):
 
         if Usuarios.objects.filter(correo_usu=value).exists():
+            raise serializers.ValidationError(
+                "El correo ya existe"
+            )
+
+        return value
+
+
+# =========================
+# ACTUALIZAR USUARIO
+# =========================
+
+class ActualizarUsuarioSerializer(serializers.Serializer):
+
+    nom_per = serializers.CharField(max_length=255, required=False)
+    ap_pat_per = serializers.CharField(max_length=255, required=False)
+    carnet_per = serializers.CharField(max_length=255, required=False)
+    cel_per = serializers.CharField(max_length=255, required=False)
+    correo_usu = serializers.EmailField(required=False)
+    id_rol_1 = serializers.IntegerField(required=False)
+
+    def validate_correo_usu(self, value):
+
+        usuario = self.context.get('usuario')
+        qs = Usuarios.objects.filter(correo_usu=value)
+        if usuario:
+            qs = qs.exclude(pk=usuario.pk)
+
+        if qs.exists():
             raise serializers.ValidationError(
                 "El correo ya existe"
             )

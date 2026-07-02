@@ -1,15 +1,14 @@
-// ARCHIVO COMPLETO — reemplaza frontend/src/components/layout/parts/Sidebar.jsx
-import React from 'react'
-
 import {
     Cross,
     X,
     MapPin,
-    PieChart,
+    Calendar,
     Users,
     LogOut,
     BookOpen,
-    FolderOpen,          // ← nuevo icono para Documentos
+    FolderOpen,
+    ScanLine,
+    Church,
 } from 'lucide-react'
 
 import {
@@ -20,6 +19,19 @@ import {
 import NavItem from './NavItem'
 
 import { useAuth } from '@/modules/auth/hooks/useAuth'
+
+import { puedeVer } from '@/modules/auth/roles'
+
+// Items del menú. `mod` decide la visibilidad por rol (ver roles.js).
+const NAV_ITEMS = [
+    { href: '/',            icon: Calendar,   label: 'Calendario', mod: 'calendario' },
+    { href: '/usuarios',    icon: Users,      label: 'Usuarios',   mod: 'usuarios' },
+    { href: '/centros',     icon: MapPin,     label: 'Centros',    mod: 'centros' },
+    { href: '/bautizos',    icon: BookOpen,   label: 'Bautizos',   mod: 'bautizos' },
+    { href: '/documentos',  icon: FolderOpen, label: 'Documentos', mod: 'documentos' },
+    { href: '/scanner',     icon: ScanLine,   label: 'Scanner',    mod: 'scanner' },
+    { href: '/iglesias',    icon: Church,     label: 'Iglesias',   mod: 'iglesias' },
+]
 
 export default function Sidebar({
     isOpen,
@@ -54,14 +66,6 @@ export default function Sidebar({
     }
     
     const { user } = useAuth()
-
-    const isAdmin =
-        [1,2,3].includes(
-            user?.id_rol_1
-        )
-
-    const isCliente =
-        user?.id_rol_1 === 4
 
     return (
 
@@ -156,86 +160,22 @@ export default function Sidebar({
                     py-4
                 ">
                     {
-                        isAdmin && (
-                            <NavItem
-                                href="/"
-                                icon={<PieChart size={20} />}
-                                label="Panel de Control"
-                                active={url === '/'}
-                                onClick={handleNavClick}
-                            />
-                        )
-                    }
-
-                    {
-                        isAdmin && (
-
-                            <NavItem
-                                href="/usuarios"
-                                icon={<Users size={20} />}
-                                label="Usuarios"
-                                active={url.startsWith('/usuarios')}
-                                onClick={handleNavClick}
-                            />
-
-                        )
-                    }
-
-                    {
-                        isAdmin && (
-
-                            <NavItem
-                                href="/centros"
-                                icon={<MapPin size={20} />}
-                                label="Centros"
-                                active={url.startsWith('/centros')}
-                                onClick={handleNavClick}
-                            />
-
-                        )
-                    }
-
-                    {
-                        isAdmin && (
-
-                            <NavItem
-                                href="/bautizos"
-                                icon={<BookOpen size={20} />}
-                                label="Bautizos"
-                                active={url.startsWith('/bautizos')}
-                                onClick={handleNavClick}
-                            />
-
-                        )
-                    }
-
-                    {/* ── NUEVO: Documentos (visible para admin y cliente) ── */}
-                    {
-                        (isAdmin || isCliente) && (
-
-                            <NavItem
-                                href="/documentos"
-                                icon={<FolderOpen size={20} />}
-                                label="Documentos"
-                                active={url.startsWith('/documentos')}
-                                onClick={handleNavClick}
-                            />
-
-                        )
-                    }
-
-                    {
-                        isCliente && (
-
-                            <NavItem
-                                href="/iglesias"
-                                icon={<MapPin size={20} />}
-                                label="Iglesias"
-                                active={url.startsWith('/iglesias')}
-                                onClick={handleNavClick}
-                            />
-
-                        )
+                        NAV_ITEMS
+                            .filter(item => puedeVer(user, item.mod))
+                            .map(({ href, icon: Icon, label, mod }) => (
+                                <NavItem
+                                    key={mod}
+                                    href={href}
+                                    icon={<Icon size={20} />}
+                                    label={label}
+                                    active={
+                                        href === '/'
+                                            ? url === '/'
+                                            : url.startsWith(href)
+                                    }
+                                    onClick={handleNavClick}
+                                />
+                            ))
                     }
 
                 </nav>

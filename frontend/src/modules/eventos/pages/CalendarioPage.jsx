@@ -27,11 +27,17 @@ import horarioService from '@/modules/centros/services/horarioService';
 
 import eventoService from '@/modules/eventos/services/eventoService';
 
+import { useAuth } from '@/modules/auth/hooks/useAuth';
+import { puedeEditar } from '@/modules/auth/roles';
+
 export default function CalendarioPage() {
 
     const { id } = useParams();
 
     const navigate = useNavigate();
+
+    const { user } = useAuth();
+    const puedeCrear = puedeEditar(user, 'calendario'); // Fiel solo ve
 
     const [selectedDate,
     setSelectedDate] =
@@ -824,9 +830,9 @@ export default function CalendarioPage() {
 
                             editable={false}
 
-                            selectable={true}
+                            selectable={puedeCrear}
 
-                            select={handleSelect}
+                            select={puedeCrear ? handleSelect : undefined}
 
                             height="auto"
 

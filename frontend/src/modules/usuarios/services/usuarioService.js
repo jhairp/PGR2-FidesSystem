@@ -10,6 +10,11 @@ export const crearUsuario = async (data) => {
     return response.data
 }
 
+export const actualizarUsuario = async (id, data) => {
+    const response = await api.patch(`/usuarios/${id}/`, data)
+    return response.data
+}
+
 export const cambiarEstadoUsuario = async (id) => {
     const response = await api.patch(`/usuarios/${id}/estado/`)
     return response.data

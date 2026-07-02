@@ -6,6 +6,7 @@ export default function UsuarioTable({
     usuarios,
     toggleStatus,
     onView,
+    onEdit,
 }) {
 
     return (
@@ -114,6 +115,7 @@ export default function UsuarioTable({
                                         <TableActions
                                             item={user}
                                             onView={onView}
+                                            onEdit={onEdit}
                                         />
                                     </div>
 

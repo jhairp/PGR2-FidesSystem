@@ -2,6 +2,7 @@ import useUsuarios from '../hooks/useUsuarios'
 import UsuarioTable from '../components/UsuarioTable'
 import UsuarioModal from '../components/UsuarioModal'
 import UsuarioViewCard from '../components/UsuarioViewCard'
+import UserCardForm from '../components/UserCardForm'
 import TableControls from '../../../components/ui/TableControls'
 import ActionOverlay from '../../../components/ui/ActionOverlay'
 import TopAlert from '../../../components/ui/TopAlert'
@@ -21,8 +22,12 @@ export default function UsuariosIndex() {
         loading,
 
         showModal,
-        abrirModal,
+        modalMode,
         cerrarModal,
+
+        abrirCrear,
+        abrirEditar,
+        openView,
 
         overlay,
         topAlert,
@@ -35,7 +40,13 @@ export default function UsuariosIndex() {
 
         toggleStatus,
 
-        openView,
+        roles,
+        formData,
+        setData,
+        errors,
+        processing,
+        handleSubmit,
+
         selectedUser,
 
     } = usuariosHook
@@ -69,7 +80,7 @@ export default function UsuariosIndex() {
                         <ReportButton />
 
                         <CreateButton
-                            onClick={abrirModal}
+                            onClick={abrirCrear}
                         >
                             Nuevo Usuario
                         </CreateButton>
@@ -89,6 +100,7 @@ export default function UsuariosIndex() {
                 usuarios={usuarios}
                 toggleStatus={toggleStatus}
                 onView={openView}
+                onEdit={abrirEditar}
             />
 
             <UsuarioModal
@@ -96,10 +108,27 @@ export default function UsuariosIndex() {
                 onClose={cerrarModal}
             >
 
-                <UsuarioViewCard
-                    user={selectedUser}
-                    onClose={cerrarModal}
-                />
+                {modalMode === 'view' ? (
+
+                    <UsuarioViewCard
+                        user={selectedUser}
+                        onClose={cerrarModal}
+                    />
+
+                ) : (
+
+                    <UserCardForm
+                        data={formData}
+                        setData={setData}
+                        errors={errors}
+                        roles={roles}
+                        isEditing={modalMode === 'edit'}
+                        submit={handleSubmit}
+                        processing={processing}
+                        isViewOnly={false}
+                    />
+
+                )}
 
             </UsuarioModal>
 

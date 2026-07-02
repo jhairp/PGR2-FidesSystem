@@ -15,6 +15,8 @@ import Login from '../modules/auth/pages/Login'
 
 import ProtectedRoute from '@/modules/auth/components/ProtectedRoute'
 
+import RequireRol from '@/modules/auth/components/RequireRol'
+
 import Register from '../modules/auth/pages/Register'
 
 import CompleteGoogleData from '../modules/auth/pages/CompleteGoogleData'
@@ -86,38 +88,38 @@ export default function AppRoutes() {
 
                 <Route
                     path="usuarios"
-                    element={<UsuariosIndex />}
+                    element={<RequireRol mod="usuarios"><UsuariosIndex /></RequireRol>}
                 />
 
                 <Route
                     path="/bautizos"
-                    element={<BautizosIndex />}
+                    element={<RequireRol mod="bautizos"><BautizosIndex /></RequireRol>}
                 />
 
                 <Route
                     path="/bautizos/certificado-editor"
-                    element={<CertificadoEditorPage />}
+                    element={<RequireRol mod="bautizos"><CertificadoEditorPage /></RequireRol>}
                 />
 
                 <Route
                     path="/scanner"
-                    element={<ScannerIndex />}
+                    element={<RequireRol mod="scanner"><ScannerIndex /></RequireRol>}
                 />
 
-                <Route path="/centros" element={<CentrosIndex />} />
+                <Route path="/centros" element={<RequireRol mod="centros"><CentrosIndex /></RequireRol>} />
 
-                <Route path="/centros/create" element={<CentroCreate />} />
+                <Route path="/centros/create" element={<RequireRol mod="centros"><CentroCreate /></RequireRol>} />
 
-                <Route path="/centros/edit/:id" element={<CentroEdit />} />
+                <Route path="/centros/edit/:id" element={<RequireRol mod="centros"><CentroEdit /></RequireRol>} />
 
-                <Route path="/iglesias" element={<IglesiasMapPage />} />
+                <Route path="/iglesias" element={<RequireRol mod="iglesias"><IglesiasMapPage /></RequireRol>} />
 
                 <Route path="/calendario/:id" element={<CalendarioPage />} />
 
-                <Route path="/evento" element={<EventoPage />}/>
+                <Route path="/evento" element={<RequireRol mod="calendario" editar><EventoPage /></RequireRol>}/>
 
                 {/* ── NUEVA RUTA ── */}
-                <Route path="/documentos" element={<DocumentosIndex />} />
+                <Route path="/documentos" element={<RequireRol mod="documentos"><DocumentosIndex /></RequireRol>} />
 
             </Route>
 
